@@ -9,7 +9,7 @@ const Contact = () => {
         <h5 className="text-xl font-medium">Contact</h5>
         <MdOutlineContactMail size={20} />
       </div>
-      <p className="text-xs md:text-sm text-gray-500">
+      <p className="text-xs md:text-sm text-gray-500 dark:text-white">
         Let&apos;s build something amazing together. Get in touch.
       </p>
       <div className="flex gap-4 mt-6">
@@ -37,7 +37,7 @@ const ContactCard = ({ contact }: ContactCardProps) => {
     <a
       href={contact.isMail ? `mailto:${contact.mail}` : contact.href}
       target="_blank"
-      className="border bg-slate-200 p-2 rounded hover:bg-black hover:text-white transition duration-200"
+      className="border p-2 rounded-md transition duration-200 shadow-md"
     >
       <contact.icon size={40} className="" />
     </a>

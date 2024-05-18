@@ -17,7 +17,7 @@ const Footer = () => {
         <a
           href="https://storyset.com/data"
           target="_blank"
-          className="text-muted-foreground text-xs sm:text-sm"
+          className="text-muted-foreground text-xs sm:text-sm dark:text-white"
         >
           Data illustrations by Storyset
         </a>

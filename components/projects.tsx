@@ -11,7 +11,7 @@ const Projects = () => {
           <CgWebsite size={20} />
         </div>
         <p
-          className="text-xs md:text-sm text-gray-500
+          className="text-xs md:text-sm text-gray-500 dark:text-white
         "
         >
           Selectd projects

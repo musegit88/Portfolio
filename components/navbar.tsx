@@ -1,18 +1,24 @@
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
+import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
   return (
     <div className="flex items-center justify-between p-4">
-      <Link href={"/"}>
-        <span className="bg-black text-white p-2 w-10 h-10 font-semibold">
+      <Link href={"/"} className="flex items-center">
+        <div className="bg-black border rounded-tl-md rounded-bl-md text-white p-2 font-semibold">
           M4
-        </span>
-        <span className="bg-white ml-1">Dev</span>
+        </div>
+        <div className="border rounded-tr-md rounded-br-md p-2  font-semibold shadow-md">
+          Dev
+        </div>
       </Link>
-      <a href="https://github.com/musegit88" target="_blank">
-        <FaGithub size={20} />
-      </a>
+      <div className="flex items-center gap-4">
+        <a href="https://github.com/musegit88" target="_blank">
+          <FaGithub size={20} />
+        </a>
+        <ThemeToggle />
+      </div>
     </div>
   );
 };

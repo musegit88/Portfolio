@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Encode_Sans_Semi_Expanded } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const font = Encode_Sans_Semi_Expanded({
   subsets: ["latin"],
@@ -26,7 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <main className="container">{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="container">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

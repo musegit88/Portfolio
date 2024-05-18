@@ -7,7 +7,7 @@ const Hero = () => {
         <h2 className="max-sm:text-3xl text-4xl font-semibold">
           Hi,I&apos;M Muse a full-stack <br /> web developer{" "}
         </h2>
-        <p className="tracking-tighter max-[932px]:max-w-[480px] text-lg">
+        <p className="tracking-tighter max-[932px]:max-w-[480px] text-lg duration-500 animate animate-in fade-in-5 slide-in-from-bottom-2.5">
           {" "}
           A creative and detail-oriented web developer with a passion for
           building beautiful and functional websites. Beyond coding, I enjoy
