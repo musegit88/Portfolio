@@ -27,15 +27,18 @@ const Projects = () => {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 alt={project.label}
-                className="object-cover object-center w-full h-full"
+                className="object-cover object-top w-full h-full"
               />
               <div className="absolute w-full h-full  bg-gradient-to-t from-black via-black/20 " />
-              <div className="absolute flex flex-col justify-end h-full p-4 text-white">
-                <div className="text-white mb-2 flex items-center gap-2 w-full">
-                  <span title={project.label} className="line-clamp-1">
+              <div className="absolute flex flex-col justify-end h-full text-white p-4">
+                <div className="mb-2 flex flex-col lg:flex-row lg:items-center gap-2 w-full">
+                  <span
+                    title={project.label}
+                    className="line-clamp-1 font-semibold"
+                  >
                     {project.label}
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {project.tech.map((item, index) => (
                       <span
                         key={index}
@@ -47,7 +50,7 @@ const Projects = () => {
                   </div>
                 </div>
                 <p className="text-sm">{project.description}</p>
-                <a href={project.href} className="text-xs">
+                <a href={project.href} target="_blank" className="text-xs">
                   {project.href}
                 </a>
               </div>

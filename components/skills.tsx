@@ -24,7 +24,7 @@ interface SkillCardProps {
 const SkillCard = ({ icon: Icon }: SkillCardProps) => {
   return (
     <div className="border p-2 rounded-md transition duration-200 shadow-md">
-      <Icon size={40} className="" />
+      <Icon size={40} />
     </div>
   );
 };
