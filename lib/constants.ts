@@ -30,16 +30,25 @@ export const projects = [
     label: "Prime AI",
     description: "All in one AI app.",
     href: "https://primeai.vercel.app",
-    tech: ["NextJs", "Sql"],
+    tech: ["NextJs", "Sql", "tailwind"],
   },
 
   {
     id: 2,
     image: "/images/ticketpass.png",
     label: "Ticketpass",
-    description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+    description:
+      "Ticketpass allows users to create, manage, and sell tickets for educational events.",
     href: "https://ticketpass-tau.vercel.app",
     tech: ["NextJs", "mongodb", "prisma"],
+  },
+  {
+    id: 3,
+    image: "/images/companion.png",
+    label: "Companion",
+    description: "Your personal AI companion.",
+    href: "https://ai-companions-alpha.vercel.app",
+    tech: ["NextJs", "PostgresSQL", "OpenAI", "shadcn"],
   },
 ];
 
