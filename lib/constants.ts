@@ -1,8 +1,8 @@
-import { FaHtml5 } from "react-icons/fa6";
+import { FaDocker, FaHtml5 } from "react-icons/fa6";
 import { FaCss3Alt } from "react-icons/fa6";
 import { FaReact } from "react-icons/fa";
 import { BiLogoTailwindCss } from "react-icons/bi";
-import { SiNextdotjs } from "react-icons/si";
+import { SiNextdotjs, SiPostgresql } from "react-icons/si";
 import { BiLogoMongodb } from "react-icons/bi";
 import { FaGitAlt } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -20,21 +20,14 @@ export const skills = [
   SiNextdotjs,
   BiLogoMongodb,
   DiMysql,
+  SiPostgresql,
   FaGitAlt,
   FaGithub,
+  FaDocker,
 ];
 export const projects = [
   {
     id: 1,
-    image: "/images/primeai.png",
-    label: "Prime AI",
-    description: "All in one AI app.",
-    href: "https://primeai.vercel.app",
-    tech: ["NextJs", "Sql", "tailwind"],
-  },
-
-  {
-    id: 2,
     image: "/images/ticketpass.png",
     label: "Ticketpass",
     description:
@@ -43,12 +36,20 @@ export const projects = [
     tech: ["NextJs", "mongodb", "prisma"],
   },
   {
-    id: 3,
+    id: 2,
     image: "/images/companion.png",
     label: "Companion",
     description: "Your personal AI companion.",
     href: "https://ai-companions-alpha.vercel.app",
     tech: ["NextJs", "PostgresSQL", "OpenAI", "shadcn"],
+  },
+  {
+    id: 3,
+    image: "/images/primeai.png",
+    label: "Prime AI",
+    description: "All in one AI app.",
+    href: "https://primeai.vercel.app",
+    tech: ["NextJs", "Sql", "tailwind"],
   },
 ];
 
