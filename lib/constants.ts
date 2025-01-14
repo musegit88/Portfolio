@@ -55,7 +55,7 @@ export const projects = [
 
 export const contacts = [
   {
-    mail: "m4dev88@outlook.com",
+    mail: "musemy88@gmail.com",
     icon: BiLogoGmail,
     isMail: true,
   },
