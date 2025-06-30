@@ -28,12 +28,11 @@ export const skills = [
 export const projects = [
   {
     id: 1,
-    image: "/images/ticketpass.png",
-    label: "Ticketpass",
-    description:
-      "Ticketpass allows users to create, manage, and sell tickets for educational events.",
-    href: "https://ticketpass-tau.vercel.app",
-    tech: ["NextJs", "mongodb", "prisma"],
+    image: "/images/simple-todo.png",
+    label: "Simple todo",
+    description: "Manage tasks, create lists, and stay productive.",
+    href: "https://simple-todo-27ki.vercel.app",
+    tech: ["NextJs", "PostgreSQL", "prisma", "shadcn"],
   },
   {
     id: 2,
@@ -41,7 +40,7 @@ export const projects = [
     label: "Companion",
     description: "Your personal AI companion.",
     href: "https://ai-companions-alpha.vercel.app",
-    tech: ["NextJs", "PostgresSQL", "OpenAI", "shadcn"],
+    tech: ["NextJs", "PostgreSQL", "OpenAI", "shadcn"],
   },
   {
     id: 3,
@@ -50,6 +49,15 @@ export const projects = [
     description: "All in one AI app.",
     href: "https://primeai.vercel.app",
     tech: ["NextJs", "Sql", "tailwind"],
+  },
+  {
+    id: 4,
+    image: "/images/ticketpass.png",
+    label: "Ticketpass",
+    description:
+      "Ticketpass allows users to create, manage, and sell tickets for educational events.",
+    href: "https://ticketpass-tau.vercel.app",
+    tech: ["NextJs", "mongodb", "prisma"],
   },
 ];
 
