@@ -6,9 +6,9 @@ const Skills = () => {
     <section className="mt-24">
       <h5 className="text-xl font-medium">Skills</h5>
       <p>Experience in modern web development frameworks and tools.</p>
-      <div className="flex flex-wrap  w-full gap-4 mt-6">
-        {skills.map((icon, index) => (
-          <SkillCard key={index} icon={icon} />
+      <div className="flex flex-wrap w-full gap-4 mt-6">
+        {skills.map((skill, index) => (
+          <SkillCard key={index} skill={skill} />
         ))}
       </div>
     </section>
@@ -18,13 +18,19 @@ const Skills = () => {
 export default Skills;
 
 interface SkillCardProps {
-  icon: IconType;
+  skill: {
+    title: string;
+    icon: IconType;
+  };
 }
 
-const SkillCard = ({ icon: Icon }: SkillCardProps) => {
+const SkillCard = ({ skill }: SkillCardProps) => {
   return (
-    <div className="border p-2 rounded-md transition duration-200 shadow-md">
-      <Icon size={40} />
+    <div
+      className="border p-2 rounded-md transition duration-200 shadow-md"
+      title={skill.title}
+    >
+      <skill.icon size={40} />
     </div>
   );
 };

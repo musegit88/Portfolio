@@ -10,20 +10,22 @@ import { DiMysql } from "react-icons/di";
 import { BiLogoGmail } from "react-icons/bi";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { IoLogoJavascript } from "react-icons/io";
+import { BiLogoTypescript } from "react-icons/bi";
 
 export const skills = [
-  FaHtml5,
-  FaCss3Alt,
-  IoLogoJavascript,
-  FaReact,
-  BiLogoTailwindCss,
-  SiNextdotjs,
-  BiLogoMongodb,
-  DiMysql,
-  SiPostgresql,
-  FaGitAlt,
-  FaGithub,
-  FaDocker,
+  { title: "HTML5", icon: FaHtml5 },
+  { title: "CSS", icon: FaCss3Alt },
+  { title: "JavaScript", icon: IoLogoJavascript },
+  { title: "TypeScript", icon: BiLogoTypescript },
+  { title: "React", icon: FaReact },
+  { title: "Tailwind", icon: BiLogoTailwindCss },
+  { title: "NextJs", icon: SiNextdotjs },
+  { title: "Mongodb", icon: BiLogoMongodb },
+  { title: "Mysql", icon: DiMysql },
+  { title: "Postgresql", icon: SiPostgresql },
+  { title: "Git", icon: FaGitAlt },
+  { title: "Github", icon: FaGithub },
+  { title: "Docker", icon: FaDocker },
 ];
 export const projects = [
   {
