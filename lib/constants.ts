@@ -2,7 +2,7 @@ import { FaDocker, FaHtml5 } from "react-icons/fa6";
 import { FaCss3Alt } from "react-icons/fa6";
 import { FaReact } from "react-icons/fa";
 import { BiLogoTailwindCss } from "react-icons/bi";
-import { SiNextdotjs, SiPostgresql } from "react-icons/si";
+import { SiNextdotjs, SiPostgresql, SiPostman } from "react-icons/si";
 import { BiLogoMongodb } from "react-icons/bi";
 import { FaGitAlt } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -23,6 +23,7 @@ export const skills = [
   { title: "Mongodb", icon: BiLogoMongodb },
   { title: "Mysql", icon: DiMysql },
   { title: "Postgresql", icon: SiPostgresql },
+  { title: "Postman", icon: SiPostman },
   { title: "Git", icon: FaGitAlt },
   { title: "Github", icon: FaGithub },
   { title: "Docker", icon: FaDocker },
