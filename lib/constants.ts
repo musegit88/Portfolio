@@ -31,6 +31,22 @@ export const skills = [
 export const projects = [
   {
     id: 1,
+    image: "/images/slice.png",
+    label: "S&S",
+    description: "Pizza ordering web app.",
+    href: "https://slice-of-pizza.vercel.app/",
+    tech: ["NextJs", "mongodb", "prisma", "recaptcha"],
+  },
+  {
+    id: 2,
+    image: "/images/tldrai.png",
+    label: "TL;DRead",
+    description: "TL;DRead is an AI-powered summarizer.",
+    href: "https://tldrai.netlify.app/",
+    tech: ["React", "Vite", "Netlify", "i18n"],
+  },
+  {
+    id: 3,
     image: "/images/simple-todo.png",
     label: "Simple todo",
     description: "Manage tasks, create lists, and stay productive.",
@@ -38,7 +54,7 @@ export const projects = [
     tech: ["NextJs", "PostgreSQL", "prisma", "shadcn"],
   },
   {
-    id: 2,
+    id: 4,
     image: "/images/companion.png",
     label: "Companion",
     description: "Your personal AI companion.",
@@ -46,7 +62,7 @@ export const projects = [
     tech: ["NextJs", "PostgreSQL", "OpenAI", "shadcn"],
   },
   {
-    id: 3,
+    id: 5,
     image: "/images/primeai.png",
     label: "Prime AI",
     description: "All in one AI app.",
@@ -54,7 +70,7 @@ export const projects = [
     tech: ["NextJs", "Sql", "tailwind"],
   },
   {
-    id: 4,
+    id: 6,
     image: "/images/ticketpass.png",
     label: "Ticketpass",
     description:
