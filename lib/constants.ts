@@ -13,20 +13,20 @@ import { IoLogoJavascript } from "react-icons/io";
 import { BiLogoTypescript } from "react-icons/bi";
 
 export const skills = [
-  { title: "HTML5", icon: FaHtml5 },
-  { title: "CSS", icon: FaCss3Alt },
-  { title: "JavaScript", icon: IoLogoJavascript },
-  { title: "TypeScript", icon: BiLogoTypescript },
-  { title: "React", icon: FaReact },
-  { title: "Tailwind", icon: BiLogoTailwindCss },
-  { title: "NextJs", icon: SiNextdotjs },
-  { title: "Mongodb", icon: BiLogoMongodb },
-  { title: "Mysql", icon: DiMysql },
-  { title: "Postgresql", icon: SiPostgresql },
-  { title: "Postman", icon: SiPostman },
-  { title: "Git", icon: FaGitAlt },
-  { title: "Github", icon: FaGithub },
-  { title: "Docker", icon: FaDocker },
+  { name: "HTML5", icon: FaHtml5 },
+  { name: "CSS", icon: FaCss3Alt },
+  { name: "JavaScript", icon: IoLogoJavascript },
+  { name: "TypeScript", icon: BiLogoTypescript },
+  { name: "React", icon: FaReact },
+  { name: "Tailwind", icon: BiLogoTailwindCss },
+  { name: "NextJs", icon: SiNextdotjs },
+  { name: "Mongodb", icon: BiLogoMongodb },
+  { name: "Mysql", icon: DiMysql },
+  { name: "Postgresql", icon: SiPostgresql },
+  { name: "Postman", icon: SiPostman },
+  { name: "Git", icon: FaGitAlt },
+  { name: "Github", icon: FaGithub },
+  { name: "Docker", icon: FaDocker },
 ];
 export const projects = [
   {
