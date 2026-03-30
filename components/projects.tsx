@@ -10,18 +10,13 @@ const Projects = () => {
           <h5 className="text-xl font-medium">Projects</h5>
           <CgWebsite size={20} />
         </div>
-        <p
-          className="text-xs md:text-sm text-gray-500 dark:text-white
-        "
-        >
-          Selectd projects
-        </p>
+        <p className="text-xs sm:text-sm">Selectd projects</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {projects.map((project) => (
           <div key={project.id}>
-            <div className="relative w-full h-60 overflow-hidden rounded shadow-md border">
+            <div className="group block relative w-full h-60 overflow-hidden rounded shadow-md border transition-transform duration-150 ease-in hover:scale-[1.02] hover:shadow-xl">
               <Image
                 src={project.image}
                 fill
@@ -32,12 +27,12 @@ const Projects = () => {
               <div className="absolute w-full h-full  bg-gradient-to-t from-black via-black/20 " />
               <div className="absolute flex flex-col justify-end h-full text-white p-4">
                 <div className="mb-2 flex flex-col lg:flex-row lg:items-center gap-2 w-full">
-                  <span
+                  <h4
                     title={project.label}
                     className="line-clamp-1 font-semibold"
                   >
                     {project.label}
-                  </span>
+                  </h4>
                   <div className="flex flex-wrap items-center gap-2">
                     {project.tech.map((item, index) => (
                       <span
@@ -49,9 +44,13 @@ const Projects = () => {
                     ))}
                   </div>
                 </div>
-                <p className="text-sm">{project.description}</p>
-                <a href={project.href} target="_blank" className="text-xs">
-                  {project.href}
+                <p className="text-sm sm:text-base">{project.description}</p>
+                <a
+                  href={project.href}
+                  target="_blank"
+                  className="text-xs sm:text-sm text-slate-400 group-hover:underline"
+                >
+                  {project.href.replace("https://", "")}
                 </a>
               </div>
             </div>

@@ -34,7 +34,7 @@ export const projects = [
     image: "/images/slice.png",
     label: "S&S",
     description: "Pizza ordering web app.",
-    href: "https://slice-of-pizza.vercel.app/",
+    href: "https://slice-of-pizza.vercel.app",
     tech: ["NextJs", "mongodb", "prisma", "recaptcha"],
   },
   {
@@ -42,7 +42,7 @@ export const projects = [
     image: "/images/tldrai.png",
     label: "TL;DRead",
     description: "TL;DRead is an AI-powered summarizer.",
-    href: "https://tldrai.netlify.app/",
+    href: "https://tldrai.netlify.app",
     tech: ["React", "Vite", "Netlify", "i18n"],
   },
   {
