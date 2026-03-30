@@ -11,6 +11,8 @@ import { BiLogoGmail } from "react-icons/bi";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { IoLogoJavascript } from "react-icons/io";
 import { BiLogoTypescript } from "react-icons/bi";
+import { FaNodeJs } from "react-icons/fa6";
+import { SiExpress } from "react-icons/si";
 
 export const skills = [
   { name: "HTML5", icon: FaHtml5 },
@@ -19,8 +21,9 @@ export const skills = [
   { name: "TypeScript", icon: BiLogoTypescript },
   { name: "React", icon: FaReact },
   { name: "Tailwind", icon: BiLogoTailwindCss },
-  { name: "NextJs", icon: SiNextdotjs },
-  { name: "Mongodb", icon: BiLogoMongodb },
+  { name: "Next.js", icon: SiNextdotjs },
+  { name: "Node.js", icon: FaNodeJs },
+  { name: "Express.js", icon: SiExpress },
   { name: "Mysql", icon: DiMysql },
   { name: "Postgresql", icon: SiPostgresql },
   { name: "Postman", icon: SiPostman },
