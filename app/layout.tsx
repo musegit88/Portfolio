@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
-import { Encode_Sans_Semi_Expanded } from "next/font/google";
+import { Encode_Sans_Semi_Expanded, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "./providers";
+import { cn } from "@/lib/utils";
+
+const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const font = Encode_Sans_Semi_Expanded({
   subsets: ["latin"],
@@ -25,7 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      suppressHydrationWarning={true}
+      className={cn("font-sans", inter.variable, interHeading.variable)}
+    >
       <body className={font.className}>
         <ThemeProvider
           attribute="class"
@@ -33,7 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="container">{children}</main>
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>
