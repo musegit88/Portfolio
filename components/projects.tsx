@@ -1,8 +1,26 @@
 import { CgWebsite } from "react-icons/cg";
-import { projects } from "@/lib/constants";
 import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
-const Projects = () => {
+const Projects = async () => {
+  return (
+    <Suspense fallback={<ProjectsSkeleton />}>
+      <ProjectsContent />
+    </Suspense>
+  );
+};
+
+export default Projects;
+
+const ProjectsContent = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  const projects = await prisma.project.findMany({
+    orderBy: {
+      order: "asc",
+    },
+  });
   return (
     <section className="flex flex-col gap-y-4 mt-28">
       <div>
@@ -18,23 +36,23 @@ const Projects = () => {
           <div key={project.id}>
             <div className="group block relative w-full h-60 overflow-hidden rounded shadow-md border transition-transform duration-150 ease-in hover:scale-[1.02] hover:shadow-xl">
               <Image
-                src={project.image}
+                src={project.imageUrl}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                alt={project.label}
+                alt={project.title}
                 className="object-cover object-top w-full h-full"
               />
               <div className="absolute w-full h-full  bg-gradient-to-t from-black via-black/20 " />
               <div className="absolute flex flex-col justify-end h-full text-white p-4">
                 <div className="mb-2 flex flex-col lg:flex-row lg:items-center gap-2 w-full">
                   <h4
-                    title={project.label}
+                    title={project.title}
                     className="line-clamp-1 font-semibold"
                   >
-                    {project.label}
+                    {project.title}
                   </h4>
                   <div className="flex flex-wrap items-center gap-2">
-                    {project.tech.map((item, index) => (
+                    {project.technologies.map((item, index) => (
                       <span
                         key={index}
                         className="text-xs text-black bg-white px-1 rounded"
@@ -46,11 +64,11 @@ const Projects = () => {
                 </div>
                 <p className="text-sm sm:text-base">{project.description}</p>
                 <a
-                  href={project.href}
+                  href={project.demoUrl!}
                   target="_blank"
                   className="text-xs sm:text-sm text-slate-400 group-hover:underline"
                 >
-                  {project.href.replace("https://", "")}
+                  {project.demoUrl!.replace("https://", "")}
                 </a>
               </div>
             </div>
@@ -61,4 +79,24 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+const ProjectsSkeleton = async () => {
+  const projects = await prisma.project.count();
+  return (
+    <section className="flex flex-col gap-y-4 mt-28">
+      <div className="flex flex-col gap-2">
+        <Skeleton className="w-40 h-6 bg-gray-500/40" />
+        <Skeleton className="w-32 h-4 bg-gray-500/40" />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: projects }).map((_, index) => (
+          <div key={index}>
+            <div className="w-full h-60">
+              <Skeleton className="w-full h-full bg-gray-500/40" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
