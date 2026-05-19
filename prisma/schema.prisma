@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Admin model to store admin user details for authentication, including email, password, name, and timestamps for creation and updates.
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Project model to store project details for the portfolio, including title, description, image URL, demo URL, GitHub URL, technologies used, and whether it's featured.
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  imageUrl     String
+  demoUrl      String?
+  githubUrl    String?
+  technologies String[]
+  featured     Boolean  @default(false)
+  order        Int      @default(0) // Field to control the order of projects in the portfolio
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Skill model to store skills for the portfolio, including name, level, category, and an optional icon URL.
+model Skill {
+  id        String   @id @default(cuid())
+  name      String
+  level     Int?     @default(7)
+  category  String // e.g., "Frontend", "Backend", "DevOps", etc.
+  icon      String?
+  order     Int      @default(0) // Field to control the order of skills in the portfolio
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// About model to store personal information for the portfolio, such as name, title, bio, contact info, and social links.
+model About {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  title     String
+  bio       String   @db.Text
+  email     String?
+  github    String?
+  linkedin  String?
+  x         String?
+  avatarUrl String?
+  resumeUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
