@@ -1,17 +1,60 @@
 import type { Metadata } from "next";
-import { Encode_Sans_Semi_Expanded, Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { cn } from "@/lib/utils";
+
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Providers } from "./providers";
-import { cn } from "@/lib/utils";
 
-const interHeading = Inter({ subsets: ["latin"], variable: "--font-heading" });
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
-const font = Encode_Sans_Semi_Expanded({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "600", "800"],
+const encodeSansSemiExpanded = localFont({
+  src: [
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Thin.ttf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-ExtraLight.ttf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/EncodeSansSemiExpanded-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-encode",
 });
 
 export const metadata: Metadata = {
@@ -34,9 +77,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning={true}
-      className={cn("font-sans", inter.variable, interHeading.variable)}
+      className={cn("font-encode", encodeSansSemiExpanded.variable)}
     >
-      <body className={font.className}>
+      <body className={encodeSansSemiExpanded.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
