@@ -95,3 +95,10 @@ export const contacts = [
     isMail: false,
   },
 ];
+
+export const navTabs = [
+  { value: "overview", label: "Overview" },
+  { value: "projects", label: "Projects" },
+  { value: "skills", label: "Skills" },
+  { value: "about", label: "About" },
+];
