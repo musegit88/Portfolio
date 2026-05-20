@@ -74,11 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning={true}
-      className={cn("font-encode", encodeSansSemiExpanded.variable)}
-    >
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={encodeSansSemiExpanded.className}>
         <ThemeProvider
           attribute="class"
