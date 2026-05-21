@@ -49,7 +49,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // create new project
+    // Get the highest order number and increment by 1
+    // This automatically places new projects at the end
+    const maxOrder = await prisma.project.aggregate({
+      _max: {
+        order: true,
+      },
+    });
+
+    const nextOrder = (maxOrder._max.order || 0) + 1;
+
+    // create new project with auto-incremented order
     const project = await prisma.project.create({
       data: {
         title,
@@ -59,7 +69,8 @@ export async function POST(request: NextRequest) {
         githubUrl,
         technologies,
         featured,
-        order,
+        // order is set to nextOrder to automatically place new projects at the end
+        order: nextOrder,
       },
     });
 
