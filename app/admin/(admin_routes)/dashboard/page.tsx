@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "../_components/header";
 import Overview from "../_components/overview";
 import Projects from "../_components/projects";
 import Skills from "../_components/skills";
@@ -34,8 +33,7 @@ const Dashboard = async () => {
   const about = await prisma.about.findFirst();
   return (
     <div className="h-screen">
-      <Header session={session} />
-      <div className="mt-4 container">
+      <div className="mt-4">
         <Tabs
           defaultValue="overview"
           className="flex flex-col items-center justify-center"
