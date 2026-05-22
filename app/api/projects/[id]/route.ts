@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { supabase } from "@/lib/supabase";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -69,9 +70,31 @@ export async function DELETE(
   }
   const { id } = await params;
   try {
+    // get project image url
+    const projectImageUrl = await prisma.project.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        imageUrl: true,
+      },
+    });
+    // extract file name from url
+    const fileName = projectImageUrl?.imageUrl.split("/").pop();
+
+    // delete project from database
     await prisma.project.delete({
       where: { id },
     });
+
+    // delete project image from storage
+    const { error } = await supabase.storage
+      .from("project-images")
+      .remove([`public/${fileName}`]);
+    if (error) {
+      return NextResponse.json({ error: "Failed to delete project image" });
+    }
+
     return NextResponse.json({ message: "Project deleted successfully" });
   } catch (error) {
     console.error("Failed to delete project:", error);
