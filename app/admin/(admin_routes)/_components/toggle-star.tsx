@@ -10,18 +10,15 @@ import { Button } from "@/components/ui/button";
 
 const ToggleStar = ({ project }: { project: Project }) => {
   const router = useRouter();
+  const [updating, setUpdating] = useState(false);
 
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const handleFeatured = async (
-    projectId: string,
-    projectFeatured: boolean,
-  ) => {
-    setUpdatingId(projectId);
+  const handleFeatured = async () => {
+    setUpdating(true);
     try {
-      const response = await fetch(`/api/projects/${projectId}`, {
+      const response = await fetch(`/api/projects/${project.id}`, {
         method: "PUT",
         body: JSON.stringify({
-          featured: !projectFeatured,
+          featured: !project.featured,
         }),
       });
       if (!response.ok) {
@@ -32,31 +29,28 @@ const ToggleStar = ({ project }: { project: Project }) => {
       // alert("Project updated successfully");
       router.refresh();
     } catch (error) {
-      console.error("", error);
+      console.error("Failed to update project", error);
       // TODO: add toast notification
       alert(error);
     } finally {
-      setUpdatingId(null);
+      setUpdating(false);
     }
   };
   return (
-    <div>
-      {" "}
-      <Button
-        variant="star"
-        size="icon"
-        title={project.featured ? "Unmark as featured" : "Mark as featured"}
-        onClick={() => handleFeatured(project.id, project.featured)}
-      >
-        {project.id === updatingId ? (
-          <Loader2 className="animate-spin" />
-        ) : project.featured ? (
-          <Star className="fill-yellow-600" />
-        ) : (
-          <Star />
-        )}
-      </Button>
-    </div>
+    <Button
+      variant="star"
+      size="icon"
+      title={project.featured ? "Unmark as featured" : "Mark as featured"}
+      onClick={handleFeatured}
+    >
+      {updating ? (
+        <Loader2 className="animate-spin" />
+      ) : project.featured ? (
+        <Star className="fill-yellow-600" />
+      ) : (
+        <Star />
+      )}
+    </Button>
   );
 };
 
