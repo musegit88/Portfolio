@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Loader, Upload } from "lucide-react";
 
+import { Project } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
 import { webDevTechs } from "@/lib/constants";
 
@@ -30,28 +31,62 @@ import {
 } from "@/components/ui/multi-select";
 import { Textarea } from "@/components/ui/textarea";
 
-const Form = () => {
+const Form = ({ project }: { project?: Project }) => {
   const router = useRouter();
   // image file state
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const initialValues = useMemo(
+    () => ({
+      title: project?.title || "",
+      description: project?.description || "",
+      imageUrl: project?.imageUrl || "",
+      demoUrl: project?.demoUrl || "",
+      githubUrl: project?.githubUrl || "",
+      technologies: project?.technologies || ([] as string[]),
+      archived: project?.archived || false,
+      featured: project?.featured || false,
+    }),
+    [project],
+  );
+
   // form data state
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    imageUrl: "",
-    demoUrl: "",
-    githubUrl: "",
-    technologies: [] as string[],
-    archived: false,
-    featured: false,
-  });
+  const [formData, setFormData] = useState(initialValues);
+
+  // check if form has changes
+  const [isChanged, setIsChanged] = useState(false);
 
   // loading states
   const [loading, setLoading] = useState(false);
 
   // image uploading state
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    // check if string/boolean values changed
+    const isDataChanged =
+      formData.title !== initialValues.title ||
+      formData.description !== initialValues.description ||
+      formData.demoUrl !== initialValues.demoUrl ||
+      formData.githubUrl !== initialValues.githubUrl ||
+      formData.archived !== initialValues.archived ||
+      formData.featured !== initialValues.featured;
+
+    // since 'technologies' is an array, compare its length and contents
+    const isTechStackChanged =
+      formData.technologies.length !== initialValues.technologies.length ||
+      !formData.technologies.every((tech) =>
+        initialValues.technologies.includes(tech),
+      );
+
+    // check if image has changed
+    const isImageChanged = imageFile !== null;
+
+    // The form has changes if any of the above has changed
+    const hasChanges = isDataChanged || isTechStackChanged || isImageChanged;
+
+    setIsChanged(hasChanges);
+  }, [formData, initialValues, imageFile]);
 
   // supabase image upload
   const uploadImage = async (file: File) => {
@@ -78,15 +113,19 @@ const Form = () => {
     e.preventDefault();
 
     // check if image is selected for upload
-    if (!imageFile) {
+    if (!project && !imageFile) {
       // TODO: Add toast notification
       alert("Please upload an image for the project");
       return;
     }
 
     setIsUploading(true);
-    // const imageUrl = await handleImageUpload(imageFile);
-    const imageUrl = await uploadImage(imageFile);
+    // get image url from form data
+    let imageUrl = formData.imageUrl;
+    // if image is selected for upload, upload it
+    if (imageFile) {
+      imageUrl = await uploadImage(imageFile);
+    }
     setIsUploading(false);
 
     // check if image is uploaded
@@ -97,31 +136,63 @@ const Form = () => {
     }
 
     setLoading(true);
-    try {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        body: JSON.stringify({ ...formData, imageUrl }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        const data = await response.json();
-        // TODO: Add toast notification
-        alert(data.error || "Failed to add project");
-      }
+    // if project is defined, update it
+    if (project) {
+      try {
+        const response = await fetch(`/api/projects/${project.id}`, {
+          method: "PUT",
+          body: JSON.stringify({ ...formData, imageUrl }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          const data = await response.json();
+          // TODO: Add toast notification
+          alert(data.error || "Failed to update project");
+        }
 
-      // Redirect to dashboard on success
-      if (response.ok) {
-        router.push("/admin/dashboard");
-        router.refresh();
+        // Redirect to dashboard on success
+        if (response.ok) {
+          router.push("/admin/dashboard");
+          router.refresh();
+        }
+      } catch (error) {
+        console.error("Error updating project:", error);
+        // TODO: Add toast notification
+        alert("Failed to update project");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error adding project:", error);
-      // TODO: Add toast notification
-      alert("Failed to add project");
-    } finally {
-      setLoading(false);
+    }
+    // if project is not defined, add it
+    else {
+      try {
+        const response = await fetch("/api/projects", {
+          method: "POST",
+          body: JSON.stringify({ ...formData, imageUrl }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          const data = await response.json();
+          // TODO: Add toast notification
+          alert(data.error || "Failed to add project");
+        }
+
+        // Redirect to dashboard on success
+        if (response.ok) {
+          router.push("/admin/dashboard");
+          router.refresh();
+        }
+      } catch (error) {
+        console.error("Error adding project:", error);
+        // TODO: Add toast notification
+        alert("Failed to add project");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -129,7 +200,7 @@ const Form = () => {
     <form onSubmit={handleSubmit}>
       <FieldGroup>
         <FieldSet>
-          <FieldLegend>Add Project</FieldLegend>
+          <FieldLegend>{project ? "Edit Project" : "Add Project"}</FieldLegend>
           <FieldGroup>
             <Field className="max-w-md">
               <FieldLabel htmlFor="title">Title</FieldLabel>
@@ -174,9 +245,20 @@ const Form = () => {
 
                   <div className="relative max-sm:h-44">
                     <div className="flex justify-center rounded-md h-full sm:h-44 border border-input whitespace-nowrap cursor-pointer">
+                      {/* if image is selected for upload */}
                       {imageFile && (
                         <Image
                           src={URL.createObjectURL(imageFile)}
+                          alt="Project Image"
+                          width={500}
+                          height={500}
+                          className="w-full h-full object-cover object-top rounded-md"
+                        />
+                      )}
+                      {/* if image is uploaded */}
+                      {formData.imageUrl && !imageFile && (
+                        <Image
+                          src={formData.imageUrl}
                           alt="Project Image"
                           width={500}
                           height={500}
@@ -287,10 +369,16 @@ const Form = () => {
               <FieldLabel htmlFor="featured">Featured</FieldLabel>
             </Field>
             <div className="flex flex-col sm:flex-row sm:items-center items-end">
-              <p className="text-sm text-muted-foreground">
-                New projects are automatically added to the end of your
-                portfolio. You can reorder projects later from the dashboard.
-              </p>
+              {project ? (
+                <p className="text-sm text-muted-foreground">
+                  You can reorder projects later from the dashboard.
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  New projects are automatically added to the end of your
+                  portfolio. You can reorder projects later from the dashboard.
+                </p>
+              )}
               <Field
                 orientation="horizontal"
                 className="flex justify-end w-fit"
@@ -299,15 +387,22 @@ const Form = () => {
                   <Link href={"/admin/dashboard"}>Cancel</Link>
                 </Button>
                 <Button
-                  disabled={loading || isUploading}
+                  disabled={loading || isUploading || !isChanged}
                   type="submit"
                   variant="default"
                 >
-                  {isUploading
-                    ? "Uploading Image"
-                    : loading
-                      ? "Submitting"
-                      : "Submit"}
+                  {project &&
+                    (isUploading
+                      ? "Uploading Image"
+                      : loading
+                        ? "Updating"
+                        : "Update")}
+                  {!project &&
+                    (isUploading
+                      ? "Uploading Image"
+                      : loading
+                        ? "Submitting"
+                        : "Submit")}
                   {(loading || isUploading) && (
                     <Loader className="animate-spin" />
                   )}
