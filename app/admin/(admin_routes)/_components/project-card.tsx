@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Archive, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 import { Project } from "@/generated/prisma/client";
 
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import DeleteProject from "./delete-project";
 import ToggleStar from "./toggle-star";
+import ToggleArchive from "./toggle-archive";
 
 const ProjectCard = ({ projects }: { projects: Project[] }) => {
   return (
@@ -47,9 +48,7 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
                     <Pencil />
                   </Link>
                 </Button>
-                <Button variant="archive" size="icon" title="Archive project">
-                  <Archive />
-                </Button>
+                <ToggleArchive project={project} />
                 <DeleteProject
                   projectId={project.id}
                   projectTitle={project.title}
