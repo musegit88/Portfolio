@@ -30,13 +30,16 @@ const DeleteProject = ({
         method: "DELETE",
       });
       if (!response.ok) {
-        alert("Failed to delete project");
+        throw new Error("Failed to delete project");
       }
       const data = await response.json();
-      console.log(data);
+      // TODO: add toast notification
+      alert(data.message);
       router.refresh();
     } catch (error) {
       console.error("Error deleting project:", error);
+      // TODO: add toast notification
+      alert(error);
     }
   };
   return (

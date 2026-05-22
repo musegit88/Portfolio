@@ -149,7 +149,7 @@ const Form = ({ project }: { project?: Project }) => {
         if (!response.ok) {
           const data = await response.json();
           // TODO: Add toast notification
-          alert(data.error || "Failed to update project");
+          throw new Error(data.error || "Failed to update project");
         }
 
         // Redirect to dashboard on success
@@ -178,14 +178,12 @@ const Form = ({ project }: { project?: Project }) => {
         if (!response.ok) {
           const data = await response.json();
           // TODO: Add toast notification
-          alert(data.error || "Failed to add project");
+          throw new Error(data.error || "Failed to add project");
         }
-
+        alert("Project updated successfully");
         // Redirect to dashboard on success
-        if (response.ok) {
-          router.push("/admin/dashboard");
-          router.refresh();
-        }
+        router.push("/admin/dashboard");
+        router.refresh();
       } catch (error) {
         console.error("Error adding project:", error);
         // TODO: Add toast notification
