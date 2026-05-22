@@ -7,10 +7,11 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
+  const { id } = await params;
   try {
     const project = await prisma.project.findUnique({
       where: {
-        id: params.id,
+        id,
       },
     });
     if (!project) {
@@ -36,12 +37,13 @@ export async function PUT(
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { id } = await params;
   try {
     const body = await request.json();
 
     const project = await prisma.project.update({
       where: {
-        id: params.id,
+        id,
       },
       data: body,
     });
@@ -65,10 +67,10 @@ export async function DELETE(
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
+  const { id } = await params;
   try {
     await prisma.project.delete({
-      where: { id: params.id },
+      where: { id },
     });
     return NextResponse.json({ message: "Project deleted successfully" });
   } catch (error) {
