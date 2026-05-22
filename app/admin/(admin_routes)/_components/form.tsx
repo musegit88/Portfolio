@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Loader, Upload } from "lucide-react";
 
+import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { webDevTechs } from "@/lib/constants";
 
@@ -53,12 +54,12 @@ const Form = () => {
   // image uploading state
   const [isUploading, setIsUploading] = useState(false);
 
-  // handle image upload
-  const handleImageUpload = async (file: File) => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
+  // supabase image upload
+
+  const uploadImage = async (file: File) => {
     try {
+      const formData = new FormData();
+      formData.append("file", file);
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -86,7 +87,8 @@ const Form = () => {
     }
 
     setIsUploading(true);
-    const imageUrl = await handleImageUpload(imageFile);
+    // const imageUrl = await handleImageUpload(imageFile);
+    const imageUrl = await uploadImage(imageFile);
     setIsUploading(false);
 
     // check if image is uploaded
