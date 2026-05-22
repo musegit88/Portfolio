@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Loader, Upload } from "lucide-react";
 
-import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { webDevTechs } from "@/lib/constants";
 
@@ -55,7 +54,6 @@ const Form = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   // supabase image upload
-
   const uploadImage = async (file: File) => {
     try {
       const formData = new FormData();
