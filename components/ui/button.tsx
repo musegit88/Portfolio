@@ -22,6 +22,7 @@ const buttonVariants = cva(
         edit: "bg-green-600/20 text-green-600 hover:bg-green-700/20 focus-visible:border-green-700 focus-visible:ring-green-700/20 dark:bg-green-700/20 dark:hover:bg-green-800/20 dark:focus-visible:ring-green-800/40",
         archive:
           "bg-blue-600/20 text-blue-600 hover:bg-blue-700/20 focus-visible:border-blue-700 focus-visible:ring-blue-700/20 dark:bg-blue-700/20 dark:hover:bg-blue-800/20 dark:focus-visible:ring-blue-800/40",
+        star: "bg-yellow-600/20 text-yellow-600 hover:bg-yellow-700/20 focus-visible:border-yellow-700 focus-visible:ring-yellow-700/20 dark:bg-yellow-700/20 dark:hover:bg-yellow-800/20 dark:focus-visible:ring-yellow-800/40",
       },
       size: {
         default:

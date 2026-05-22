@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Archive, Pencil, Trash } from "lucide-react";
+import { Archive, Pencil } from "lucide-react";
 
 import { Project } from "@/generated/prisma/client";
 
@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import DeleteProject from "./delete-project";
+import ToggleStar from "./toggle-star";
 
 const ProjectCard = ({ projects }: { projects: Project[] }) => {
   return (
@@ -40,6 +41,7 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
                 </div>
               </div>
               <div className="flex justify-end gap-2">
+                <ToggleStar project={project} />
                 <Button asChild variant="edit" size="icon" title="Edit project">
                   <Link href={`/admin/dashboard/projects/edit/${project.id}`}>
                     <Pencil />
