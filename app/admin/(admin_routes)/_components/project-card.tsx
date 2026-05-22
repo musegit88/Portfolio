@@ -9,6 +9,7 @@ import { Project } from "@/generated/prisma/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import DeleteProject from "./delete-project";
 
 const ProjectCard = ({ projects }: { projects: Project[] }) => {
   return (
@@ -44,22 +45,13 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
                     <Pencil />
                   </Link>
                 </Button>
-                <Button
-                  variant="archive"
-                  size="icon"
-                  title="Archive project"
-                  className=""
-                >
+                <Button variant="archive" size="icon" title="Archive project">
                   <Archive />
                 </Button>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  title="Delete project"
-                  className=""
-                >
-                  <Trash />
-                </Button>
+                <DeleteProject
+                  projectId={project.id}
+                  projectTitle={project.title}
+                />
               </div>
             </div>
           </CardContent>
