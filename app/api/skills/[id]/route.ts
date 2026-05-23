@@ -12,16 +12,18 @@ export async function PUT(
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { id } = await params;
 
   try {
     const body = await request.json();
 
-    const skill = await prisma.skill.update({
+    await prisma.skill.update({
       where: {
-        id: params.id,
+        id,
       },
       data: body,
     });
+    return NextResponse.json("Skill updated successfully");
   } catch (error) {
     console.error("Failed to update skill:", error);
     return NextResponse.json(
@@ -41,11 +43,12 @@ export async function DELETE(
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { id } = await params;
 
   try {
     await prisma.skill.delete({
       where: {
-        id: params.id,
+        id,
       },
     });
     return NextResponse.json({ message: "Skill deleted successfully" });
