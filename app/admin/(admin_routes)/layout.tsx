@@ -9,7 +9,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Header session={session} />
-      <main className="container">{children}</main>
+      <main className="container my-4">{children}</main>
     </div>
   );
 };
