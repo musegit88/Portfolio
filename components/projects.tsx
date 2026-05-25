@@ -1,7 +1,9 @@
-import { CgWebsite } from "react-icons/cg";
-import Image from "next/image";
-import { prisma } from "@/lib/prisma";
 import { Suspense } from "react";
+import Image from "next/image";
+import { CgWebsite } from "react-icons/cg";
+
+import { prisma } from "@/lib/prisma";
+
 import { Skeleton } from "./ui/skeleton";
 
 const Projects = async () => {
@@ -15,8 +17,11 @@ const Projects = async () => {
 export default Projects;
 
 const ProjectsContent = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 10000));
   const projects = await prisma.project.findMany({
+    where: {
+      featured: true,
+      archived: false,
+    },
     orderBy: {
       order: "asc",
     },
