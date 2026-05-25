@@ -1,6 +1,8 @@
+import { Suspense } from "react";
+
 import { getIcon } from "@/lib/icon-mapper";
 import { prisma } from "@/lib/prisma";
-import { Suspense } from "react";
+
 import { Skeleton } from "./ui/skeleton";
 
 const Skills = async () => {
@@ -12,7 +14,6 @@ const Skills = async () => {
 };
 
 const SkillsContent = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   const skills = await prisma.skill.findMany({
     orderBy: {
       order: "asc",
