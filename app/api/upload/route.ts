@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getSupabaseClient } from "@/lib/supabase";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
     // upload file to supabase storage
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase.storage
       .from("project-images")
       .upload(`public/${fileName}`, file);

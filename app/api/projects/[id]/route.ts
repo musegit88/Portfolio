@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseClient } from "@/lib/supabase";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -90,7 +90,7 @@ export async function DELETE(
     });
 
     // delete project image from storage
-    const { error } = await supabase.storage
+    const { error } = await getSupabaseClient().storage
       .from("project-images")
       .remove([`public/${fileName}`]);
     if (error) {
