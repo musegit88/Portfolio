@@ -31,9 +31,10 @@ const Header = ({ session }: { session: Session }) => {
         </div>
         <div className="flex items-center gap-2">
           <Button
+            title="Logout"
             variant="destructive"
             size="icon"
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={() => signOut({ callbackUrl: "/admin/login" })}
           >
             <LogOut />
           </Button>
