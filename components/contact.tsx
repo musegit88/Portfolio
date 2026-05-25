@@ -1,8 +1,27 @@
-import { contacts } from "@/lib/constants";
+import { Suspense } from "react";
+import { BiLogoGmail } from "react-icons/bi";
 import { MdOutlineContactMail } from "react-icons/md";
-import { IconType } from "react-icons/lib";
+import { FaLinkedinIn } from "react-icons/fa6";
 
-const Contact = () => {
+import { prisma } from "@/lib/prisma";
+
+import { Skeleton } from "./ui/skeleton";
+
+const Contact = async () => {
+  return (
+    <Suspense fallback={<ContactSkeleton />}>
+      <ContactContent />
+    </Suspense>
+  );
+};
+
+const ContactContent = async () => {
+  const contact = await prisma.about.findFirst({
+    select: {
+      email: true,
+      linkedin: true,
+    },
+  });
   return (
     <section className="mt-28">
       <div className="flex items-center gap-4">
@@ -13,9 +32,16 @@ const Contact = () => {
         Let&apos;s build something amazing together. Get in touch.
       </p>
       <div className="flex gap-4 mt-6">
-        {contacts.map((contact, index) => (
-          <ContactCard key={index} contact={contact} />
-        ))}
+        <div className="border p-2 rounded-md transition duration-200 shadow-md">
+          <a href={`mailto:${contact?.email}`} target="_blank">
+            <BiLogoGmail size={40} className="" />
+          </a>
+        </div>
+        <div className="border p-2 rounded-md transition duration-200 shadow-md">
+          <a href={`${contact?.linkedin}`} target="_blank">
+            <FaLinkedinIn size={40} className="" />
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -23,23 +49,19 @@ const Contact = () => {
 
 export default Contact;
 
-interface ContactCardProps {
-  contact: {
-    href?: string;
-    icon: IconType;
-    isMail: boolean;
-    mail?: string;
-  };
-}
-
-const ContactCard = ({ contact }: ContactCardProps) => {
+// skeleton for contact while loading
+const ContactSkeleton = () => {
   return (
-    <a
-      href={contact.isMail ? `mailto:${contact.mail}` : contact.href}
-      target="_blank"
-      className="border p-2 rounded-md transition duration-200 shadow-md"
-    >
-      <contact.icon size={40} className="" />
-    </a>
+    <section className="mt-28">
+      <div className="flex flex-col gap-2">
+        <Skeleton className="w-40 h-6 bg-gray-500/40" />
+        <Skeleton className="w-32 h-4 bg-gray-500/40" />
+      </div>
+      <div className="flex flex-wrap w-full gap-4 mt-6">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <Skeleton key={index} className="w-20 h-20 bg-gray-500/40" />
+        ))}
+      </div>
+    </section>
   );
 };
