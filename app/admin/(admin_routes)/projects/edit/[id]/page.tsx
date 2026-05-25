@@ -1,7 +1,10 @@
-import Form from "@/app/admin/(admin_routes)/_components/form";
 import { prisma } from "@/lib/prisma";
 
-const EditProjectPage = async ({ params }: { params: { id: string } }) => {
+import Form from "@/app/admin/(admin_routes)/_components/form";
+
+type Params = Promise<{ id: string }>;
+
+const EditProjectPage = async ({ params }: { params: Params }) => {
   const { id } = await params;
   const project = await prisma.project.findUnique({
     where: {

@@ -2,10 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+type Params = Promise<{ id: string }>;
+
 // Update skill (protected)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Params },
 ) {
   const session = await getServerSession();
 
@@ -36,7 +38,7 @@ export async function PUT(
 // Delete skill (protected)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Params },
 ) {
   const session = await getServerSession();
 

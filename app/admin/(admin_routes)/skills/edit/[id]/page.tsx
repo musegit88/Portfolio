@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import SkillForm from "../../../_components/skill-form";
 
-const EditSkillPage = async ({ params }: { params: { id: string } }) => {
+type Params = Promise<{ id: string }>;
+
+const EditSkillPage = async ({ params }: { params: Params }) => {
   const { id } = await params;
   const skill = await prisma.skill.findUnique({
     where: {

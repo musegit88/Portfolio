@@ -3,10 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+type Params = Promise<{ id: string }>;
+
 // Get single project
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Params },
 ) {
   const { id } = await params;
   try {
@@ -31,7 +33,7 @@ export async function GET(
 // Update project (protected)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Params },
 ) {
   const session = await getServerSession();
 
@@ -61,7 +63,7 @@ export async function PUT(
 // Delete project (protected)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Params },
 ) {
   const session = getServerSession();
 
