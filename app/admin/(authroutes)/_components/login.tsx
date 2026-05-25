@@ -4,6 +4,8 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Home, Loader2 } from "lucide-react";
+import { FaEyeSlash, FaEye } from "react-icons/fa6";
 
 import {
   Card,
@@ -16,8 +18,6 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
-import { FaEyeSlash, FaEye } from "react-icons/fa6";
 
 const Login = () => {
   const router = useRouter();
@@ -25,10 +25,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await signIn("credentials", {
         email,
         password,
@@ -41,6 +43,10 @@ const Login = () => {
       router.push("/admin/dashboard");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+      setEmail("");
+      setPassword("");
     }
   };
   return (
@@ -62,6 +68,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="Enter your email"
+                autoComplete="on"
               />
             </Field>
             <Field>
@@ -89,11 +96,18 @@ const Login = () => {
               </div>
             </Field>
             <Button
-              disabled={!email || !password}
+              disabled={!email || !password || loading}
               type="submit"
               className="w-full"
             >
-              Login
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="animate-spin" />
+                  Logging in...
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
           </FieldGroup>
         </form>
