@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -7,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ClipboardList, FileText, Plus, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Overview = ({
   projectsCount,
@@ -30,8 +31,10 @@ const Overview = ({
             All projects you have added to your portfolio.
           </CardDescription>
           <CardAction>
-            <Button variant="link" size="icon">
-              <Plus />
+            <Button variant="link" size="icon" asChild>
+              <Link href="/admin/projects/add">
+                <Plus />
+              </Link>
             </Button>
           </CardAction>
         </CardHeader>
@@ -52,8 +55,10 @@ const Overview = ({
             All featured projects you have added to your portfolio.
           </CardDescription>
           <CardAction>
-            <Button variant="link" size="icon">
-              <Plus />
+            <Button variant="link" size="icon" asChild>
+              <Link href="/admin/projects/add">
+                <Plus />
+              </Link>
             </Button>
           </CardAction>
         </CardHeader>
@@ -74,8 +79,10 @@ const Overview = ({
             All skills you have added to your portfolio.
           </CardDescription>
           <CardAction>
-            <Button variant="link" size="icon">
-              <Plus />
+            <Button variant="link" size="icon" asChild>
+              <Link href="/admin/skills/add">
+                <Plus />
+              </Link>
             </Button>
           </CardAction>
         </CardHeader>
