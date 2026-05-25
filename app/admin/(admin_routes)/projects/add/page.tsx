@@ -1,4 +1,4 @@
-import Form from "../../../_components/form";
+import Form from "../../_components/form";
 
 const CreateProjectPage = () => {
   return (
