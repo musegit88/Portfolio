@@ -31,11 +31,9 @@ import {
 } from "@/components/ui/multi-select";
 import { Textarea } from "@/components/ui/textarea";
 
-const Form = ({ project }: { project?: Project }) => {
+const ProjectForm = ({ project }: { project?: Project }) => {
   const router = useRouter();
-  // image file state
-  const [imageFile, setImageFile] = useState<File | null>(null);
-
+  // initial values
   const initialValues = useMemo(
     () => ({
       title: project?.title || "",
@@ -49,6 +47,10 @@ const Form = ({ project }: { project?: Project }) => {
     }),
     [project],
   );
+  // image file state
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  // image preview url state
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   // form data state
   const [formData, setFormData] = useState(initialValues);
@@ -87,6 +89,19 @@ const Form = ({ project }: { project?: Project }) => {
 
     setIsChanged(hasChanges);
   }, [formData, initialValues, imageFile]);
+
+  // Safely create and revoke the image preview URL to prevent memory leaks
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreviewUrl(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(imageFile);
+    setImagePreviewUrl(objectUrl);
+
+    // cleanup function to revoke the object URL when the component unmounts or imageFile changes
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile]);
 
   // supabase image upload
   const uploadImage = async (file: File) => {
@@ -244,9 +259,9 @@ const Form = ({ project }: { project?: Project }) => {
                   <div className="relative max-sm:h-44">
                     <div className="flex justify-center rounded-md h-full sm:h-44 border border-input whitespace-nowrap cursor-pointer">
                       {/* if image is selected for upload */}
-                      {imageFile && (
+                      {imagePreviewUrl && (
                         <Image
-                          src={URL.createObjectURL(imageFile)}
+                          src={imagePreviewUrl}
                           alt="Project Image"
                           width={500}
                           height={500}
@@ -272,7 +287,11 @@ const Form = ({ project }: { project?: Project }) => {
                       )}
                     >
                       <Upload />
-                      <span className="text-sm">Upload an image</span>
+                      <span className="text-sm">
+                        {imagePreviewUrl || formData.imageUrl
+                          ? "Change image"
+                          : "Upload image"}
+                      </span>
                     </FieldLabel>
                   </div>
                   <Input
@@ -414,4 +433,4 @@ const Form = ({ project }: { project?: Project }) => {
   );
 };
 
-export default Form;
+export default ProjectForm;
