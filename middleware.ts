@@ -4,7 +4,11 @@ export function middleware(request: NextRequest) {
   // check if the user is on the admin page
   const adminPath = request.nextUrl.pathname === "/admin";
   // get token from cookies
-  const token = request.cookies.get("next-auth.session-token");
+  const token = request.cookies.get(
+    process.env.NODE_ENV === "development"
+      ? "next-auth.session-token"
+      : "__Secure-next-auth.session-token",
+  );
   // check if the user is on the login page
   const isLoginPage = request.nextUrl.pathname === "/admin/login";
 
