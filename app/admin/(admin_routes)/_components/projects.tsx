@@ -14,7 +14,7 @@ const Projects = ({ projects }: { projects: Project[] }) => {
     <div className="mb-4">
       <div className="flex justify-end">
         <Button asChild variant="outline" className="mb-4" title="Add Project">
-          <Link href="/admin/dashboard/projects/add">
+          <Link href="/admin/projects/add">
             <Plus className="mr-2" />
             Add Project
           </Link>

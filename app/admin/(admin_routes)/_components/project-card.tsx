@@ -36,7 +36,7 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
                 <h1 className="text-2xl font-bold">{project.title}</h1>
                 <p className="text-muted-foreground">{project.description}</p>
                 <div className="flex flex-wrap items-center gap-2">
-                  {project.technologies.map((tech) => (
+                  {project.technologies.map((tech: string) => (
                     <Badge key={tech}>{tech}</Badge>
                   ))}
                 </div>
@@ -44,7 +44,7 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
               <div className="flex justify-end gap-2">
                 <ToggleStar project={project} />
                 <Button asChild variant="edit" size="icon" title="Edit project">
-                  <Link href={`/admin/dashboard/projects/edit/${project.id}`}>
+                  <Link href={`/admin/projects/edit/${project.id}`}>
                     <Pencil />
                   </Link>
                 </Button>
