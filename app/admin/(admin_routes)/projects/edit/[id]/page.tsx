@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-import Form from "@/app/admin/(admin_routes)/_components/form";
+import ProjectForm from "@/app/admin/(admin_routes)/_components/project-form";
 
 type Params = Promise<{ id: string }>;
 
@@ -13,7 +13,7 @@ const EditProjectPage = async ({ params }: { params: Params }) => {
   });
   return (
     <div className="my-4 w-full max-w-4xl mx-auto">
-      <Form project={project || undefined} />
+      <ProjectForm project={project || undefined} />
     </div>
   );
 };
