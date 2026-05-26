@@ -195,7 +195,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
           // TODO: Add toast notification
           throw new Error(data.error || "Failed to add project");
         }
-        alert("Project updated successfully");
+        alert("Project added successfully");
         // Redirect to dashboard on success
         router.push("/admin/dashboard");
         router.refresh();
