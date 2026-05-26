@@ -1,19 +1,22 @@
 import { Suspense } from "react";
+import Link from "next/link";
+import { Session } from "next-auth";
 
 import { getIcon } from "@/lib/icon-mapper";
 import { prisma } from "@/lib/prisma";
 
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
 
-const Skills = async () => {
+const Skills = async ({ user }: { user?: Session["user"] }) => {
   return (
     <Suspense fallback={<SkillsSkeleton />}>
-      <SkillsContent />
+      <SkillsContent user={user} />
     </Suspense>
   );
 };
 
-const SkillsContent = async () => {
+const SkillsContent = async ({ user }: { user?: Session["user"] }) => {
   const skills = await prisma.skill.findMany({
     orderBy: {
       order: "asc",
@@ -26,9 +29,22 @@ const SkillsContent = async () => {
         Experience in modern web development frameworks and tools.
       </p>
       <div className="flex flex-wrap w-full gap-4 mt-6">
-        {skills.map((skill) => (
-          <SkillCard key={skill.id} skill={skill} />
-        ))}
+        {skills.length > 0 ? (
+          skills.map((skill) => <SkillCard key={skill.id} skill={skill} />)
+        ) : (
+          <div className="text-sm text-center w-full">
+            {user ? (
+              <div className="flex items-center justify-center gap-2">
+                <p>Manage Skills from </p>
+                <Button asChild>
+                  <Link href="/admin/dashboard">Dashboard</Link>
+                </Button>
+              </div>
+            ) : (
+              <p>🤭 Oops! Nothing to show.</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
