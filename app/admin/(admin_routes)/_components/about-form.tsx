@@ -102,7 +102,7 @@ const AboutForm = ({ about }: { about: About }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile) {
+    if (!about.avatarUrl && !imageFile) {
       // TODO: Add toast notification
       alert("Please upload an image");
       return;
