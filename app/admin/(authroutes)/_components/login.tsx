@@ -18,6 +18,7 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Login = () => {
   const router = useRouter();
@@ -37,8 +38,7 @@ const Login = () => {
         redirect: false,
       });
       if (response?.error) {
-        // TODO: Add toast notification
-        alert(response.error);
+        toast.error(response.error);
       }
       router.push("/admin/dashboard");
     } catch (error) {

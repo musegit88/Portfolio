@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const AboutForm = ({ about }: { about: About }) => {
   const router = useRouter();
@@ -95,16 +96,14 @@ const AboutForm = ({ about }: { about: About }) => {
       return data.avatarUrl;
     } catch (error) {
       console.error("Error uploading image:", error);
-      // TODO: Add toast notification
-      alert("Failed to upload image");
+      toast.error("Failed to upload image");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!about.avatarUrl && !imageFile) {
-      // TODO: Add toast notification
-      alert("Please upload an image");
+      toast.info("Please upload an image");
       return;
     }
 
@@ -128,18 +127,15 @@ const AboutForm = ({ about }: { about: About }) => {
       });
       if (!response.ok) {
         const data = await response.json();
-        // TODO: Add toast notification
         throw new Error(data.error || "Failed to update about");
       }
-      // TODO: Add toast notification
-      alert("About updated successfully");
+      toast.success("About updated successfully");
       router.push("/admin/dashboard");
       // refresh the page
       router.refresh();
     } catch (error) {
       console.error("Error updating about:", error);
-      // TODO: Add toast notification
-      alert("Failed to update about");
+      toast.error("Failed to update about");
     } finally {
       setLoading(false);
     }

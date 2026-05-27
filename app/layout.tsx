@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { cn } from "@/lib/utils";
 
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
 
 const encodeSansSemiExpanded = localFont({
@@ -83,6 +83,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Providers>{children}</Providers>
+          <Toaster richColors position="top-right" duration={3000} />
         </ThemeProvider>
       </body>
     </html>

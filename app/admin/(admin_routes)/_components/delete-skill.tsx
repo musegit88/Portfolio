@@ -15,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const DeleteSkill = ({
   skillId,
@@ -35,13 +36,11 @@ const DeleteSkill = ({
         throw new Error("Failed to delete skill");
       }
       const data = await response.json();
-      // TODO: add toast notification
-      alert(data.message);
+      toast.success(data.message);
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting skill");
-      // TODO: add toast notification
-      alert(error);
+      toast.error(error);
     }
   };
   return (

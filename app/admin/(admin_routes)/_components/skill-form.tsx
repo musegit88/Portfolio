@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skill } from "@/generated/prisma/client";
+import { toast } from "sonner";
 
 const SkillForm = ({ skill }: { skill?: Skill }) => {
   const router = useRouter();
@@ -77,14 +78,12 @@ const SkillForm = ({ skill }: { skill?: Skill }) => {
           const data = await response.json();
           throw new Error(data.error || "Failed to update skill");
         }
-        // TODO: Add toast notification
-        alert("Skill updated successfully");
+        toast.success("Skill updated successfully");
         router.push("/admin/dashboard");
         router.refresh();
       } catch (error) {
         console.error("Error updating skill:", error);
-        // TODO: Add toast notification
-        alert("Error updating skill");
+        toast.error("Error updating skill");
       } finally {
         setLoading(false);
       }
@@ -101,13 +100,12 @@ const SkillForm = ({ skill }: { skill?: Skill }) => {
           const data = await response.json();
           throw new Error(data.error || "Failed to add skill");
         }
-        alert("Skill added successfully");
+        toast.success("Skill added successfully");
         router.push("/admin/dashboard");
         router.refresh();
       } catch (error) {
         console.error("Error adding skill:", error);
-        // TODO: Add toast notification
-        alert("Error adding skill");
+        toast.error("Error adding skill");
       } finally {
         setLoading(false);
       }

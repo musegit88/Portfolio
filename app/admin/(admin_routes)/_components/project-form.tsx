@@ -30,6 +30,7 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 const ProjectForm = ({ project }: { project?: Project }) => {
   const router = useRouter();
@@ -116,10 +117,10 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         const data = await response.json();
         return data.imageUrl;
       }
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
-      // TODO: Add toast notification
-      alert("Failed to upload image");
+      toast.error("Failed to upload image");
     }
   };
 
@@ -129,8 +130,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
 
     // check if image is selected for upload
     if (!project && !imageFile) {
-      // TODO: Add toast notification
-      alert("Please upload an image for the project");
+      toast.info("Please upload image for the project");
       return;
     }
 
@@ -145,8 +145,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
 
     // check if image is uploaded
     if (!imageUrl) {
-      // TODO: Add toast notification
-      alert("Failed to upload image");
+      toast.error("Failed to upload image");
       return;
     }
 
@@ -163,10 +162,10 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         });
         if (!response.ok) {
           const data = await response.json();
-          // TODO: Add toast notification
           throw new Error(data.error || "Failed to update project");
         }
 
+        toast.success("Project updated successfully");
         // Redirect to dashboard on success
         if (response.ok) {
           router.push("/admin/dashboard");
@@ -174,8 +173,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         }
       } catch (error) {
         console.error("Error updating project:", error);
-        // TODO: Add toast notification
-        alert("Failed to update project");
+        toast.error("Failed to update project");
       } finally {
         setLoading(false);
       }
@@ -192,17 +190,15 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         });
         if (!response.ok) {
           const data = await response.json();
-          // TODO: Add toast notification
           throw new Error(data.error || "Failed to add project");
         }
-        alert("Project added successfully");
+        toast.success("Project added successfully");
         // Redirect to dashboard on success
         router.push("/admin/dashboard");
         router.refresh();
       } catch (error) {
         console.error("Error adding project:", error);
-        // TODO: Add toast notification
-        alert("Failed to add project");
+        toast.error("Failed to add project");
       } finally {
         setLoading(false);
       }

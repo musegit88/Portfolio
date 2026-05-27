@@ -15,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const DeleteProject = ({
   projectId,
@@ -33,13 +34,11 @@ const DeleteProject = ({
         throw new Error("Failed to delete project");
       }
       const data = await response.json();
-      // TODO: add toast notification
-      alert(data.message);
+      toast.success(data.message);
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting project:", error);
-      // TODO: add toast notification
-      alert(error);
+      toast.error(error);
     }
   };
   return (

@@ -7,6 +7,7 @@ import { Archive, ArchiveX, Loader2 } from "lucide-react";
 import { Project } from "@/generated/prisma/client";
 
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const ToggleArchive = ({ project }: { project: Project }) => {
   const router = useRouter();
@@ -24,13 +25,11 @@ const ToggleArchive = ({ project }: { project: Project }) => {
       if (!response.ok) {
         throw new Error("Failed to update project");
       }
-      // TODO: add toast notification
-      alert("Project updated successfully");
+      toast.success("Project updated successfully");
       router.refresh();
     } catch (error) {
       console.error("Failed to update project", error);
-      // TODO: add toast notification
-      alert(error);
+      toast.error("Failed to update project");
     } finally {
       setUpdating(false);
     }
