@@ -44,5 +44,3 @@ trash.txt
 .hintrc
 /seed
 /generated
-/generated/prisma
-/seed
