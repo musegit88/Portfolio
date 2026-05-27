@@ -1,7 +1,27 @@
-import { skills } from "@/lib/constants";
-import { IconType } from "react-icons/lib";
+import { Suspense } from "react";
+import Link from "next/link";
+import { Session } from "next-auth";
 
-const Skills = () => {
+import { getIcon } from "@/lib/icon-mapper";
+import { prisma } from "@/lib/prisma";
+
+import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
+
+const Skills = async ({ user }: { user?: Session["user"] }) => {
+  return (
+    <Suspense fallback={<SkillsSkeleton />}>
+      <SkillsContent user={user} />
+    </Suspense>
+  );
+};
+
+const SkillsContent = async ({ user }: { user?: Session["user"] }) => {
+  const skills = await prisma.skill.findMany({
+    orderBy: {
+      order: "asc",
+    },
+  });
   return (
     <section className="mt-24">
       <h5 className="text-xl font-medium">Skills</h5>
@@ -9,9 +29,22 @@ const Skills = () => {
         Experience in modern web development frameworks and tools.
       </p>
       <div className="flex flex-wrap w-full gap-4 mt-6">
-        {skills.map((skill, index) => (
-          <SkillCard key={index} skill={skill} />
-        ))}
+        {skills.length > 0 ? (
+          skills.map((skill) => <SkillCard key={skill.id} skill={skill} />)
+        ) : (
+          <div className="text-sm text-center w-full">
+            {user ? (
+              <div className="flex items-center justify-center gap-2">
+                <p>Manage Skills from </p>
+                <Button asChild>
+                  <Link href="/admin/dashboard">Dashboard</Link>
+                </Button>
+              </div>
+            ) : (
+              <p>🤭 Oops! Nothing to show.</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -22,21 +55,44 @@ export default Skills;
 interface SkillCardProps {
   skill: {
     name: string;
-    icon: IconType;
+    icon: string | null;
+    category: string;
+    level: number | null;
   };
 }
 
 const SkillCard = ({ skill }: SkillCardProps) => {
+  const Icon = getIcon(skill.icon);
+
   return (
     <div
       className="group flex flex-col items-center gap-2 min-w-[80px] border p-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg hover:border-primary/50"
       title={skill.name}
     >
-      <skill.icon
-        size={32}
-        className="transition-transform duration-300 group-hover:scale-110"
-      />
+      {Icon && (
+        <Icon
+          size={32}
+          className="transition-transform duration-300 group-hover:scale-110"
+        />
+      )}
       <span className="text-xs">{skill.name}</span>
     </div>
+  );
+};
+
+const SkillsSkeleton = async () => {
+  const skills = await prisma.skill.count();
+  return (
+    <section className="mt-24">
+      <div className="flex flex-col gap-2">
+        <Skeleton className="w-40 h-6 bg-gray-500/40" />
+        <Skeleton className="w-32 h-4 bg-gray-500/40" />
+      </div>
+      <div className="flex flex-wrap w-full gap-4 mt-6">
+        {Array.from({ length: skills }).map((_, index) => (
+          <Skeleton key={index} className="w-20 h-20 bg-gray-500/40" />
+        ))}
+      </div>
+    </section>
   );
 };
