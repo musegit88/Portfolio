@@ -59,18 +59,24 @@ const AboutTab = ({ about }: { about: About | null }) => {
             <p className="text-sm">{about?.bio}</p>
           </div>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
-            <div className="flex items-center gap-2">
-              <MdEmail size={24} />
-              <span>{about?.email}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaGithub size={24} />
-              <span>{about?.github}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FaLinkedin size={24} />
-              <span>{about?.linkedin}</span>
-            </div>
+            {about?.email && (
+              <div className="flex items-center gap-2">
+                <MdEmail size={24} />
+                <span>{about?.email}</span>
+              </div>
+            )}
+            {about?.github && (
+              <div className="flex items-center gap-2">
+                <FaGithub size={24} />
+                <span>{about?.github}</span>
+              </div>
+            )}
+            {about?.linkedin && (
+              <div className="flex items-center gap-2">
+                <FaLinkedin size={24} />
+                <span>{about?.linkedin}</span>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
