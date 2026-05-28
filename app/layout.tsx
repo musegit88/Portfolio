@@ -58,7 +58,7 @@ const encodeSansSemiExpanded = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "M4.Dev",
+  title: "M4.Dev | Full Stack Web Developer Portfolio",
   description:
     "A full-stack web developer proficient in front-end and back-end technologies, including HTML, CSS, JavaScript, React, Node.js, and databases. Skilled in building scalable, responsive, and user-friendly web applications.",
   authors: [
@@ -68,7 +68,6 @@ export const metadata: Metadata = {
   ],
   keywords: [
     "M4.Dev",
-    "portfolio",
     "web developer",
     "full-stack",
     "full-stack developer",
