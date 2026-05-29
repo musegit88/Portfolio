@@ -18,7 +18,7 @@ const Dashboard = async () => {
   const skillsCount = await prisma.skill.count();
   const projects = await prisma.project.findMany({
     orderBy: {
-      createdAt: "desc",
+      order: "asc",
     },
   });
   const skills = await prisma.skill.findMany({
