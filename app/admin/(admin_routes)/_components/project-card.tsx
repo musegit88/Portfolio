@@ -53,17 +53,25 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
 
     const payload = reordered.map((p, index) => ({ id: p.id, order: index }));
     try {
-      const response = await fetch("/api/projects/reorder", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ projects: payload }),
-      });
-
-      if (!response.ok) {
-        toast.error("Failed to save new order. Please try again.");
-        return;
-      }
-      toast.success("Order saved successfully");
+      toast.promise(
+        async () => {
+          const response = await fetch("/api/projects/reorder", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ projects: payload }),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to save new order. Please try again.");
+          }
+          return response.json();
+        },
+        {
+          loading: "Saving new order...",
+          success: (response: { message: string }) => response.message,
+          error: (error: { error: string }) =>
+            error.error ?? "Unknown error. Try again later.",
+        },
+      );
       router.refresh();
     } catch (error) {
       console.error("Error reordering projects:", error);
@@ -84,7 +92,7 @@ const ProjectCard = ({ projects }: { projects: Project[] }) => {
 export default ProjectCard;
 
 const Sortable = ({ project, index }: { project: Project; index: number }) => {
-  const { ref, handleRef } = useSortable({ id: project.id, index });
+  const { ref, handleRef, isDragging } = useSortable({ id: project.id, index });
   return (
     <Card
       ref={ref}
@@ -111,16 +119,22 @@ const Sortable = ({ project, index }: { project: Project; index: number }) => {
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <ToggleStar project={project} />
-            <Button asChild variant="edit" size="icon" title="Edit project">
+            <ToggleStar project={project} isDragging={isDragging} />
+            <Button
+              variant="edit"
+              size="icon"
+              title="Edit project"
+              disabled={isDragging}
+            >
               <Link href={`/admin/projects/edit/${project.id}`}>
                 <Pencil />
               </Link>
             </Button>
-            <ToggleArchive project={project} />
+            <ToggleArchive project={project} isDragging={isDragging} />
             <DeleteProject
               projectId={project.id}
               projectTitle={project.title}
+              isDragging={isDragging}
             />
             <Button
               ref={handleRef}
