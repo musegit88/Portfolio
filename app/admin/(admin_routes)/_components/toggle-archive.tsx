@@ -9,7 +9,13 @@ import { Project } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const ToggleArchive = ({ project }: { project: Project }) => {
+const ToggleArchive = ({
+  project,
+  isDragging,
+}: {
+  project: Project;
+  isDragging: boolean;
+}) => {
   const router = useRouter();
   const [updating, setUpdating] = useState(false);
 
@@ -39,6 +45,7 @@ const ToggleArchive = ({ project }: { project: Project }) => {
     <Button
       variant="archive"
       size="icon"
+      disabled={isDragging}
       title={project.archived ? "Unarchive project" : "Archive project"}
       onClick={handleArchive}
     >

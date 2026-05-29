@@ -9,7 +9,13 @@ import { Project } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const ToggleStar = ({ project }: { project: Project }) => {
+const ToggleStar = ({
+  project,
+  isDragging,
+}: {
+  project: Project;
+  isDragging: boolean;
+}) => {
   const router = useRouter();
   const [updating, setUpdating] = useState(false);
 
@@ -40,6 +46,7 @@ const ToggleStar = ({ project }: { project: Project }) => {
       size="icon"
       title={project.featured ? "Unmark as featured" : "Mark as featured"}
       onClick={handleFeatured}
+      disabled={isDragging}
     >
       {updating ? (
         <Loader2 className="animate-spin" />

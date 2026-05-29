@@ -20,9 +20,11 @@ import { toast } from "sonner";
 const DeleteProject = ({
   projectId,
   projectTitle,
+  isDragging,
 }: {
   projectId: string;
   projectTitle: string;
+  isDragging: boolean;
 }) => {
   const router = useRouter();
   const handleDeleteProject = async () => {
@@ -45,7 +47,12 @@ const DeleteProject = ({
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" size="icon" title="Delete project">
+          <Button
+            variant="destructive"
+            size="icon"
+            title="Delete project"
+            disabled={isDragging}
+          >
             <Trash />
           </Button>
         </AlertDialogTrigger>
