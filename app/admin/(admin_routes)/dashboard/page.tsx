@@ -23,7 +23,7 @@ const Dashboard = async () => {
   });
   const skills = await prisma.skill.findMany({
     orderBy: {
-      createdAt: "desc",
+      order: "asc",
     },
   });
   const about = await prisma.about.findFirst();
