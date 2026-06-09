@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { prisma } from "@/lib/prisma";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
 
 const Hero = async () => {
   return (
@@ -23,6 +24,16 @@ const HeroContent = async () => {
         <p className="tracking-tighter max-[932px]:max-w-[480px] text-sm sm:text-lg duration-500 animate animate-in fade-in-5 slide-in-from-bottom-2.5">
           {about?.bio}
         </p>
+        <div className="flex justify-end mr-2">
+          <Button>
+            <a
+              href={about?.resumeUrl || ""}
+              download={`Resume_${about?.name || ""}`}
+            >
+              Download Resume
+            </a>
+          </Button>
+        </div>
       </div>
       <div className="relative w-[280px] h-[280px]">
         <Image
