@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Cog, FolderPlus, Plus } from "lucide-react";
 
@@ -12,7 +13,6 @@ import Overview from "./overview";
 import Projects from "./projects";
 import Skills from "./skills";
 import AboutTab from "./about";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const DashboardTabs = ({
   projectsCount,
@@ -21,6 +21,8 @@ const DashboardTabs = ({
   projects,
   skills,
   about,
+  chartData,
+  deviceCategory,
 }: {
   projectsCount: number;
   featuredProjectsCount: number;
@@ -28,6 +30,8 @@ const DashboardTabs = ({
   projects: Project[];
   skills: Skill[];
   about: About | null;
+  chartData?: any[];
+  deviceCategory?: any[];
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -56,6 +60,8 @@ const DashboardTabs = ({
           projectsCount={projectsCount}
           featuredProjectsCount={featuredProjectsCount}
           skillsCount={skillsCount}
+          chartData={chartData}
+          deviceCategory={deviceCategory}
         />
       </TabsContent>
       <TabsContent value="projects">

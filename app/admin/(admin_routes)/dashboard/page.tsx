@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 
 import { prisma } from "@/lib/prisma";
+import { getAnalyticsData } from "@/lib/analytics";
 
 import DashboardTabs from "../_components/dashboard-tabs";
 
@@ -27,6 +28,8 @@ const Dashboard = async () => {
     },
   });
   const about = await prisma.about.findFirst();
+  // const { pageViews, activeUsers, chartData } = await getAnalyticsData();
+  const analyticsData = await getAnalyticsData();
   return (
     <div className="h-screen">
       <div className="mt-4">
@@ -37,6 +40,8 @@ const Dashboard = async () => {
           projects={projects}
           skills={skills}
           about={about}
+          chartData={analyticsData.chartData}
+          deviceCategory={analyticsData.deviceCategory}
         />
       </div>
     </div>
