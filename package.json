@@ -11,6 +11,8 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
     "@dnd-kit/react": "^0.4.0",
+    "@google-analytics/data": "^6.1.0",
+    "@next/third-parties": "^16.2.10",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@supabase/supabase-js": "^2.106.1",
@@ -30,6 +32,7 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-icons": "^5.0.1",
+    "recharts": "^3.9.2",
     "shadcn": "^4.7.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
