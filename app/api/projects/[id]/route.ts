@@ -1,3 +1,4 @@
+import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getSupabaseClient } from "@/lib/supabase";
 import { getServerSession } from "next-auth";
@@ -35,7 +36,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Params },
 ) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -65,7 +66,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Params },
 ) {
-  const session = getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -90,8 +91,8 @@ export async function DELETE(
     });
 
     // delete project image from storage
-    const { error } = await getSupabaseClient().storage
-      .from("project-images")
+    const { error } = await getSupabaseClient()
+      .storage.from("project-images")
       .remove([`public/${fileName}`]);
     if (error) {
       return NextResponse.json({ error: "Failed to delete project image" });

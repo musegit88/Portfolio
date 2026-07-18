@@ -1,3 +1,4 @@
+import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -22,7 +23,7 @@ export async function GET() {
 
 // Create skill (protected)
 export async function POST(request: NextRequest) {
-  const session = getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

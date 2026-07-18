@@ -1,5 +1,6 @@
 // Get all projects
 
+import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,7 +25,7 @@ export async function GET() {
 
 // create project (protected)
 export async function POST(request: NextRequest) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   try {
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

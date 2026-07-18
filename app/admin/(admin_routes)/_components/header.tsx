@@ -1,7 +1,6 @@
 "use client";
 
-import { Session } from "next-auth";
-import { signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Home, LogOut } from "lucide-react";
 
@@ -10,7 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Item, ItemDescription, ItemTitle } from "@/components/ui/item";
 
-const Header = ({ session, avatar }: { session: Session; avatar?: string }) => {
+const Header = ({ avatar }: { avatar?: string }) => {
+  const { data: session } = useSession();
+
   return (
     <header className="border-b py-4">
       <div className="container flex items-center justify-between space-x-2">
@@ -24,15 +25,15 @@ const Header = ({ session, avatar }: { session: Session; avatar?: string }) => {
             <Avatar>
               <AvatarImage src={avatar}></AvatarImage>
               <AvatarFallback>
-                {session.user?.name?.charAt(0).toUpperCase()}
+                {session?.user?.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <Item variant="muted" className="hidden sm:flex flex-nowrap">
               <ItemTitle className="text-xs sm:text-sm">
-                {session.user?.name}
+                {session?.user?.name}
               </ItemTitle>
               <ItemDescription className="text-xs sm:text-sm">
-                {session.user?.email}
+                {session?.user?.email}
               </ItemDescription>
             </Item>
           </div>
