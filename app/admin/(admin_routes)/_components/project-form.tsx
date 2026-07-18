@@ -113,14 +113,15 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         method: "POST",
         body: formData,
       });
-      if (response.ok) {
+      if (!response.ok) {
         const data = await response.json();
-        return data.imageUrl;
+        throw new Error(data.error || "Failed to upload image");
       }
+      const data = await response.json();
       toast.success("Image uploaded successfully");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      toast.error("Failed to upload image");
+      return data.imageUrl;
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -227,7 +228,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
                 }
               />
             </Field>
-            <div className="flex flex-col sm:flex-row items-center">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
               <Field>
                 <FieldLabel htmlFor="description">Description</FieldLabel>
                 <FieldDescription>
@@ -242,7 +243,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
-                  className="resize-none"
+                  className="resize-none h-44"
                 />
               </Field>
               <div className="flex flex-col w-full gap-2">
@@ -301,7 +302,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
                 </Field>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-center">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
               <Field>
                 <FieldLabel htmlFor="demo">Demo Link</FieldLabel>
                 <Input
@@ -381,7 +382,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
               />
               <FieldLabel htmlFor="featured">Featured</FieldLabel>
             </Field>
-            <div className="flex flex-col sm:flex-row sm:items-center items-end">
+            <div className="flex flex-col sm:flex-row sm:items-center items-end gap-2">
               {project ? (
                 <p className="text-sm text-muted-foreground">
                   You can reorder projects later from the dashboard.

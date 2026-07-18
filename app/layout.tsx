@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
+import { prisma } from "@/lib/prisma";
 
 const encodeSansSemiExpanded = localFont({
   src: [
@@ -58,43 +59,47 @@ const encodeSansSemiExpanded = localFont({
   variable: "--font-encode",
 });
 
-export const metadata: Metadata = {
-  title: "M4.Dev | Full Stack Web Developer Portfolio",
-  description:
-    "A full-stack web developer proficient in front-end and back-end technologies, including HTML, CSS, JavaScript, React, Node.js, and databases. Skilled in building scalable, responsive, and user-friendly web applications.",
-  authors: [
-    {
-      name: "M4.Dev",
-    },
-  ],
-  keywords: [
-    "M4.Dev",
-    "web developer",
-    "full-stack",
-    "full-stack developer",
-    "Front-end developer",
-    "Back-end developer",
-    "MERN stack",
-    "PERN stack",
-    "React",
-    "Node.js",
-    "Express.js",
-    "JavaScript",
-    "HTML",
-    "CSS",
-    "database",
-    "scalable",
-    "responsive",
-    "user-friendly",
-    "web applications",
-    "TypeScript",
-    "Tailwind CSS",
-    "PostgreSQL",
-    "MongoDB",
-    "Next.js",
-    "Shadcn UI",
-  ],
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await prisma.setting.findFirst();
+  return {
+    title: settings?.siteTitle || "Dev Portfolio | Full Stack Web Developer",
+    description:
+      settings?.siteDescription ||
+      "A full-stack web developer proficient in front-end and back-end technologies, including HTML, CSS, JavaScript, React, Node.js, and databases. Skilled in building scalable, responsive, and user-friendly web applications.",
+    authors: [
+      {
+        name: "M4.Dev",
+      },
+    ],
+    keywords: [
+      "M4.Dev",
+      "web developer",
+      "full-stack",
+      "full-stack developer",
+      "Front-end developer",
+      "Back-end developer",
+      "MERN stack",
+      "PERN stack",
+      "React",
+      "Node.js",
+      "Express.js",
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "database",
+      "scalable",
+      "responsive",
+      "user-friendly",
+      "web applications",
+      "TypeScript",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "MongoDB",
+      "Next.js",
+      "Shadcn UI",
+    ],
+  };
+}
 
 export default function RootLayout({
   children,
