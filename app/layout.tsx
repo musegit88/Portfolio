@@ -60,7 +60,17 @@ const encodeSansSemiExpanded = localFont({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await prisma.setting.findFirst();
+  let settings = null;
+
+  try {
+    settings = await prisma.setting.findFirst();
+  } catch (error) {
+    // Log error but don't fail the build (e.g. during Vercel static compilation)
+    console.warn(
+      "Failed to fetch settings from DB in generateMetadata:",
+      error,
+    );
+  }
   return {
     title: settings?.siteTitle || "Dev Portfolio | Full Stack Web Developer",
     description:
