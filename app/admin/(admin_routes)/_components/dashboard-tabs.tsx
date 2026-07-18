@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Cog, FolderPlus, Plus } from "lucide-react";
 
-import { About, Project, Skill } from "@/generated/prisma/client";
+import { About, Project, Setting, Skill } from "@/generated/prisma/client";
 import { navTabs } from "@/lib/constants";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +13,7 @@ import Overview from "./overview";
 import Projects from "./projects";
 import Skills from "./skills";
 import AboutTab from "./about";
+import SettingsTab from "./settings-tab";
 
 const DashboardTabs = ({
   projectsCount,
@@ -23,6 +24,7 @@ const DashboardTabs = ({
   about,
   chartData,
   deviceCategory,
+  settings,
 }: {
   projectsCount: number;
   featuredProjectsCount: number;
@@ -32,6 +34,11 @@ const DashboardTabs = ({
   about: About | null;
   chartData?: any[];
   deviceCategory?: any[];
+  settings:
+    | (Setting & {
+        user: { id: string; name: string; email: string; password: string };
+      })
+    | null;
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -62,6 +69,7 @@ const DashboardTabs = ({
           skillsCount={skillsCount}
           chartData={chartData}
           deviceCategory={deviceCategory}
+          settings={settings as Setting}
         />
       </TabsContent>
       <TabsContent value="projects">
@@ -110,6 +118,9 @@ const DashboardTabs = ({
       </TabsContent>
       <TabsContent value="about" className="w-full">
         <AboutTab about={about} />
+      </TabsContent>
+      <TabsContent value="settings" className="w-full">
+        <SettingsTab settings={settings} />
       </TabsContent>
     </Tabs>
   );

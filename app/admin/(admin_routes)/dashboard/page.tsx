@@ -1,12 +1,13 @@
 import { getServerSession } from "next-auth";
 
+import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getAnalyticsData } from "@/lib/analytics";
 
 import DashboardTabs from "../_components/dashboard-tabs";
 
 const Dashboard = async () => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) return;
 
@@ -28,7 +29,18 @@ const Dashboard = async () => {
     },
   });
   const about = await prisma.about.findFirst();
-  // const { pageViews, activeUsers, chartData } = await getAnalyticsData();
+  const settings = await prisma.setting.findFirst({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          password: true,
+        },
+      },
+    },
+  });
   const analyticsData = await getAnalyticsData();
   return (
     <div className="h-screen">
@@ -42,6 +54,7 @@ const Dashboard = async () => {
           about={about}
           chartData={analyticsData.chartData}
           deviceCategory={analyticsData.deviceCategory}
+          settings={settings}
         />
       </div>
     </div>
