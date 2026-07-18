@@ -101,6 +101,7 @@ export const navTabs = [
   { value: "projects", label: "Projects" },
   { value: "skills", label: "Skills" },
   { value: "about", label: "About" },
+  { value: "settings", label: "Settings" },
 ];
 
 export const webDevTechs = [

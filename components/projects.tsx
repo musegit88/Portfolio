@@ -51,7 +51,7 @@ const ProjectsContent = async ({ user }: { user?: Session["user"] }) => {
                   alt={project.title}
                   className="object-cover object-top w-full h-full"
                 />
-                <div className="absolute w-full h-full  bg-gradient-to-t from-black via-black/20 " />
+                <div className="absolute w-full h-full  bg-linear-to-t from-black via-black/20 " />
                 <div className="absolute flex flex-col justify-end h-full text-white p-4">
                   <div className="mb-2 flex flex-col lg:flex-row lg:items-center gap-2 w-full">
                     <h4

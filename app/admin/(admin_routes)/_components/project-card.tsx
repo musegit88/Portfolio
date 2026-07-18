@@ -105,7 +105,7 @@ const Sortable = ({ project, index }: { project: Project; index: number }) => {
             alt={project.title}
             width={500}
             height={500}
-            className="w-full h-full object-cover object-left-top"
+            className="w-full h-full object-cover object-top-left"
           />
         </div>
         <div className="flex-1 w-full sm:w-1/2 h-full p-2 flex flex-col justify-between gap-2">

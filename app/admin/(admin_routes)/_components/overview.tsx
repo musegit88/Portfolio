@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PageViewsChart } from "@/app/admin/(admin_routes)/_components/page-views-chart";
+import { Setting } from "@/generated/prisma/client";
 
 const Overview = ({
   projectsCount,
@@ -18,12 +19,14 @@ const Overview = ({
   skillsCount,
   chartData,
   deviceCategory,
+  settings,
 }: {
   projectsCount: number;
   featuredProjectsCount: number;
   skillsCount: number;
   chartData?: any[];
   deviceCategory?: any[];
+  settings: Setting;
 }) => {
   return (
     <div className="flex flex-col gap-4 mb-4">
@@ -102,7 +105,7 @@ const Overview = ({
         </Card>
       </div>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        {chartData && chartData.length > 0 && (
+        {settings.showGoogleAnalytics && chartData && chartData.length > 0 && (
           <PageViewsChart trafficData={chartData} deviceData={deviceCategory} />
         )}
       </div>

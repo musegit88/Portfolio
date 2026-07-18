@@ -132,7 +132,7 @@ const SkillForm = ({ skill }: { skill?: Skill }) => {
                 placeholder="e.g. React"
               />
             </Field>
-            <div className="flex flex-col sm:flex-row items-center">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
               <Field>
                 <FieldLabel htmlFor="skillCategory">Skill Category</FieldLabel>
                 <FieldDescription>
@@ -207,9 +207,9 @@ const SkillForm = ({ skill }: { skill?: Skill }) => {
                 </Select>
               </Field>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center items-end justify-end">
+            <div className="flex flex-col sm:flex-row sm:items-center items-end gap-2">
               {!skill && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground w-full">
                   New skills are added to the end of the list. You can reorder
                   them later from the dashboard.
                 </p>
