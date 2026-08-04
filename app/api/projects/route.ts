@@ -34,12 +34,21 @@ export async function POST(request: NextRequest) {
     const {
       title,
       description,
+      fullDescription,
       imageUrl,
       demoUrl,
       githubUrl,
       technologies,
       featured,
       order,
+      category,
+      role,
+      duration,
+      status,
+      features,
+      metrics,
+      challenges,
+      techCategories,
     } = body;
 
     //    validate required fields
@@ -65,6 +74,7 @@ export async function POST(request: NextRequest) {
       data: {
         title,
         description,
+        ...(fullDescription && { fullDescription }),
         imageUrl,
         demoUrl,
         githubUrl,
@@ -72,6 +82,14 @@ export async function POST(request: NextRequest) {
         featured,
         // order is set to nextOrder to automatically place new projects at the end
         order: nextOrder,
+        ...(category && { category }),
+        ...(role && { role }),
+        ...(duration && { duration }),
+        ...(status && { status }),
+        ...(features && { features }),
+        ...(metrics && { metrics }),
+        ...(challenges && { challenges }),
+        ...(techCategories && { techCategories }),
       },
     });
 

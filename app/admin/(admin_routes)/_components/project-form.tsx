@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Loader, Upload } from "lucide-react";
+import { Loader, Plus, Trash2, Upload } from "lucide-react";
 
 import { Project } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
@@ -35,19 +35,76 @@ import { toast } from "sonner";
 const ProjectForm = ({ project }: { project?: Project }) => {
   const router = useRouter();
   // initial values
+  // ── Types for dynamic list fields ──
+  type FeatureItem = { title: string; description: string };
+  type MetricItem = { label: string; value: string };
+
   const initialValues = useMemo(
     () => ({
       title: project?.title || "",
       description: project?.description || "",
+      fullDescription: project?.fullDescription || "",
       imageUrl: project?.imageUrl || "",
       demoUrl: project?.demoUrl || "",
       githubUrl: project?.githubUrl || "",
       technologies: project?.technologies || ([] as string[]),
       archived: project?.archived || false,
       featured: project?.featured || false,
+      category: project?.category || "",
+      role: project?.role || "",
+      duration: project?.duration || "",
+      status: project?.status || "Production",
+      metrics: project?.metrics || "",
+      features: project?.features || "",
+      challenges:
+        Array.isArray(project?.challenges) && project.challenges.length > 0
+          ? (project.challenges as string[]).join("\n")
+          : "",
     }),
     [project],
   );
+
+  // ── Features dynamic list ──
+  const parseFeatures = (): FeatureItem[] => {
+    if (!project?.features) return [];
+    try {
+      const parsed = typeof project.features === "string"
+        ? JSON.parse(project.features)
+        : project.features;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch { return []; }
+  };
+  const [features, setFeatures] = useState<FeatureItem[]>(parseFeatures);
+
+  const addFeature = () =>
+    setFeatures((prev) => [...prev, { title: "", description: "" }]);
+  const removeFeature = (i: number) =>
+    setFeatures((prev) => prev.filter((_, idx) => idx !== i));
+  const updateFeature = (i: number, field: keyof FeatureItem, val: string) =>
+    setFeatures((prev) =>
+      prev.map((f, idx) => (idx === i ? { ...f, [field]: val } : f))
+    );
+
+  // ── Metrics dynamic list ──
+  const parseMetrics = (): MetricItem[] => {
+    if (!project?.metrics) return [];
+    try {
+      const parsed = typeof project.metrics === "string"
+        ? JSON.parse(project.metrics)
+        : project.metrics;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch { return []; }
+  };
+  const [metrics, setMetrics] = useState<MetricItem[]>(parseMetrics);
+
+  const addMetric = () =>
+    setMetrics((prev) => [...prev, { label: "", value: "" }]);
+  const removeMetric = (i: number) =>
+    setMetrics((prev) => prev.filter((_, idx) => idx !== i));
+  const updateMetric = (i: number, field: keyof MetricItem, val: string) =>
+    setMetrics((prev) =>
+      prev.map((m, idx) => (idx === i ? { ...m, [field]: val } : m))
+    );
   // image file state
   const [imageFile, setImageFile] = useState<File | null>(null);
   // image preview url state
@@ -73,7 +130,15 @@ const ProjectForm = ({ project }: { project?: Project }) => {
       formData.demoUrl !== initialValues.demoUrl ||
       formData.githubUrl !== initialValues.githubUrl ||
       formData.archived !== initialValues.archived ||
-      formData.featured !== initialValues.featured;
+      formData.featured !== initialValues.featured ||
+      formData.fullDescription !== initialValues.fullDescription ||
+      formData.category !== initialValues.category ||
+      formData.role !== initialValues.role ||
+      formData.duration !== initialValues.duration ||
+      formData.status !== initialValues.status ||
+      formData.challenges !== initialValues.challenges ||
+      JSON.stringify(features) !== JSON.stringify(initialValues.features) ||
+      JSON.stringify(metrics) !== JSON.stringify(initialValues.metrics);
 
     // since 'technologies' is an array, compare its length and contents
     const isTechStackChanged =
@@ -89,7 +154,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
     const hasChanges = isDataChanged || isTechStackChanged || isImageChanged;
 
     setIsChanged(hasChanges);
-  }, [formData, initialValues, imageFile]);
+  }, [formData, initialValues, imageFile, features, metrics]);
 
   // Safely create and revoke the image preview URL to prevent memory leaks
   useEffect(() => {
@@ -151,12 +216,26 @@ const ProjectForm = ({ project }: { project?: Project }) => {
     }
 
     setLoading(true);
+    // Build the enriched payload — convert challenges textarea text to array
+    const showcasePayload = {
+      ...formData,
+      imageUrl,
+      challenges: formData.challenges
+        ? formData.challenges
+          .split("\n")
+          .map((c: string) => c.trim())
+          .filter(Boolean)
+        : [],
+      features: features.filter((f) => f.title.trim() || f.description.trim()),
+      metrics: metrics.filter((m) => m.label.trim() || m.value.trim()),
+    };
+
     // if project is defined, update it
     if (project) {
       try {
         const response = await fetch(`/api/projects/${project.id}`, {
           method: "PUT",
-          body: JSON.stringify({ ...formData, imageUrl }),
+          body: JSON.stringify(showcasePayload),
           headers: {
             "Content-Type": "application/json",
           },
@@ -184,7 +263,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
       try {
         const response = await fetch("/api/projects", {
           method: "POST",
-          body: JSON.stringify({ ...formData, imageUrl }),
+          body: JSON.stringify(showcasePayload),
           headers: {
             "Content-Type": "application/json",
           },
@@ -359,6 +438,243 @@ const ProjectForm = ({ project }: { project?: Project }) => {
                 </MultiSelectContent>
               </MultiSelect>
             </Field>
+
+            {/* ── Showcase Detail Fields ── */}
+            <FieldSet>
+              <FieldLegend className="text-sm font-semibold text-muted-foreground uppercase tracking-wider pt-4 pb-1 border-t border-border">
+                Project Showcase Details
+              </FieldLegend>
+              <FieldDescription className="text-xs mb-4">
+                These optional fields power the interactive showcase page for this project.
+              </FieldDescription>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="fullDescription">Full Description</FieldLabel>
+                  <FieldDescription>
+                    A detailed paragraph describing the project goals, design, and impact.
+                  </FieldDescription>
+                  <Textarea
+                    id="fullDescription"
+                    name="fullDescription"
+                    rows={5}
+                    value={formData.fullDescription}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullDescription: e.target.value })
+                    }
+                    className="resize-none"
+                    placeholder="This project was built to solve..."
+                  />
+                </Field>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Field>
+                    <FieldLabel htmlFor="category">Category</FieldLabel>
+                    <Input
+                      id="category"
+                      name="category"
+                      type="text"
+                      value={formData.category}
+                      onChange={(e) =>
+                        setFormData({ ...formData, category: e.target.value })
+                      }
+                      placeholder="e.g. Full Stack Web Application"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="role">My Role</FieldLabel>
+                    <Input
+                      id="role"
+                      name="role"
+                      type="text"
+                      value={formData.role}
+                      onChange={(e) =>
+                        setFormData({ ...formData, role: e.target.value })
+                      }
+                      placeholder="e.g. Lead Full Stack Developer"
+                    />
+                  </Field>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Field>
+                    <FieldLabel htmlFor="duration">Duration / Timeline</FieldLabel>
+                    <Input
+                      id="duration"
+                      name="duration"
+                      type="text"
+                      value={formData.duration}
+                      onChange={(e) =>
+                        setFormData({ ...formData, duration: e.target.value })
+                      }
+                      placeholder="e.g. 2 Months"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="status">Status</FieldLabel>
+                    <Input
+                      id="status"
+                      name="status"
+                      type="text"
+                      value={formData.status}
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
+                      placeholder="e.g. Production"
+                    />
+                  </Field>
+                </div>
+                <Field>
+                  <FieldLabel htmlFor="challenges">Engineering Challenges</FieldLabel>
+                  <FieldDescription>
+                    One challenge per line. These will appear in the showcase Overview tab.
+                  </FieldDescription>
+                  <Textarea
+                    id="challenges"
+                    name="challenges"
+                    rows={4}
+                    value={formData.challenges}
+                    onChange={(e) =>
+                      setFormData({ ...formData, challenges: e.target.value })
+                    }
+                    className="resize-none"
+                    placeholder={`Optimizing database query performance.\nEnsuring sub-second render times on mobile.`}
+                  />
+                </Field>
+
+                {/* ── Features ── */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <FieldLabel>Key Features</FieldLabel>
+                      <FieldDescription className="mt-0.5">
+                        Highlight what this project does well. Shown in the Features tab.
+                      </FieldDescription>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addFeature}
+                      className="gap-1.5 shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Add Feature
+                    </Button>
+                  </div>
+
+                  {features.length === 0 && (
+                    <p className="text-xs text-muted-foreground py-3 text-center border border-dashed border-border rounded-lg">
+                      No features yet — click &ldquo;Add Feature&rdquo; to start.
+                    </p>
+                  )}
+
+                  <div className="space-y-3">
+                    {features.map((feature, i) => (
+                      <div
+                        key={i}
+                        className="group relative p-4 rounded-lg border border-border bg-muted/30 space-y-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold text-muted-foreground w-5 shrink-0">
+                            #{i + 1}
+                          </span>
+                          <Input
+                            id={`feature-title-${i}`}
+                            type="text"
+                            value={feature.title}
+                            onChange={(e) => updateFeature(i, "title", e.target.value)}
+                            placeholder="Feature title"
+                            className="flex-1 h-8 text-sm"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeFeature(i)}
+                            className="h-8 w-8 text-destructive hover:text-destructive shrink-0"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
+                        </div>
+                        <Textarea
+                          id={`feature-desc-${i}`}
+                          value={feature.description}
+                          onChange={(e) => updateFeature(i, "description", e.target.value)}
+                          placeholder="What does this feature do?"
+                          rows={2}
+                          className="resize-none text-sm ml-7"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Metrics ── */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <FieldLabel>Key Metrics</FieldLabel>
+                      <FieldDescription className="mt-0.5">
+                        Numbers that showcase impact. Shown in the metrics banner.
+                      </FieldDescription>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addMetric}
+                      className="gap-1.5 shrink-0"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Add Metric
+                    </Button>
+                  </div>
+
+                  {metrics.length === 0 && (
+                    <p className="text-xs text-muted-foreground py-3 text-center border border-dashed border-border rounded-lg">
+                      No metrics yet — click &ldquo;Add Metric&rdquo; to start.
+                    </p>
+                  )}
+
+                  <div className="space-y-2">
+                    {metrics.map((metric, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 p-3 rounded-lg border border-border bg-muted/30"
+                      >
+                        <span className="text-xs font-semibold text-muted-foreground w-5 shrink-0">
+                          #{i + 1}
+                        </span>
+                        <Input
+                          id={`metric-label-${i}`}
+                          type="text"
+                          value={metric.label}
+                          onChange={(e) => updateMetric(i, "label", e.target.value)}
+                          placeholder="Label (e.g. Page Speed)"
+                          className="flex-1 h-8 text-sm"
+                        />
+                        <Input
+                          id={`metric-value-${i}`}
+                          type="text"
+                          value={metric.value}
+                          onChange={(e) => updateMetric(i, "value", e.target.value)}
+                          placeholder="Value (e.g. < 1s)"
+                          className="w-32 h-8 text-sm"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeMetric(i)}
+                          className="h-8 w-8 text-destructive hover:text-destructive shrink-0"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </FieldGroup>
+            </FieldSet>
 
             <Field orientation="horizontal">
               <Checkbox

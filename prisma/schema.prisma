@@ -26,18 +26,27 @@ model Admin {
 
 // Project model to store project details for the portfolio, including title, description, image URL, demo URL, GitHub URL, technologies used, and whether it's featured.
 model Project {
-  id           String   @id @default(cuid())
-  title        String
-  description  String
-  imageUrl     String
-  demoUrl      String?
-  githubUrl    String?
-  technologies String[]
-  featured     Boolean  @default(false)
-  order        Int      @default(0) // Field to control the order of projects in the portfolio
-  archived     Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String   @id @default(cuid())
+  title           String
+  description     String
+  fullDescription String?  @db.Text
+  imageUrl        String
+  demoUrl         String?
+  githubUrl       String?
+  technologies    String[]
+  featured        Boolean  @default(false)
+  order           Int      @default(0) // Field to control the order of projects in the portfolio
+  archived        Boolean  @default(false)
+  category        String?
+  role            String?
+  duration        String?
+  status          String?  @default("Production")
+  features        Json?
+  metrics         Json?
+  challenges      String[]
+  techCategories  Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // Skill model to store skills for the portfolio, including name, level, category, and an optional icon URL.

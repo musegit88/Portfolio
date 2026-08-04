@@ -44,12 +44,47 @@ export async function PUT(
   const { id } = await params;
   try {
     const body = await request.json();
+    const {
+      title,
+      description,
+      fullDescription,
+      imageUrl,
+      demoUrl,
+      githubUrl,
+      technologies,
+      featured,
+      archived,
+      category,
+      role,
+      duration,
+      status,
+      features,
+      metrics,
+      challenges,
+      techCategories,
+    } = body;
 
     const project = await prisma.project.update({
-      where: {
-        id,
+      where: { id },
+      data: {
+        ...(title !== undefined && { title }),
+        ...(description !== undefined && { description }),
+        ...(fullDescription !== undefined && { fullDescription }),
+        ...(imageUrl !== undefined && { imageUrl }),
+        ...(demoUrl !== undefined && { demoUrl }),
+        ...(githubUrl !== undefined && { githubUrl }),
+        ...(technologies !== undefined && { technologies }),
+        ...(featured !== undefined && { featured }),
+        ...(archived !== undefined && { archived }),
+        ...(category !== undefined && { category }),
+        ...(role !== undefined && { role }),
+        ...(duration !== undefined && { duration }),
+        ...(status !== undefined && { status }),
+        ...(features !== undefined && { features }),
+        ...(metrics !== undefined && { metrics }),
+        ...(challenges !== undefined && { challenges }),
+        ...(techCategories !== undefined && { techCategories }),
       },
-      data: body,
     });
     return NextResponse.json(project);
   } catch (error) {
