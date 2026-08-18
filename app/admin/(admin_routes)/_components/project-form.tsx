@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Loader, Plus, Trash2, Upload } from "lucide-react";
+import { Loader, Loader2, Plus, Sparkles, Trash2, Upload } from "lucide-react";
 
 import { Project } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
@@ -248,7 +248,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
         toast.success("Project updated successfully");
         // Redirect to dashboard on success
         if (response.ok) {
-          router.push("/admin/dashboard");
+          router.push(`/projects/${project.id}`);
           router.refresh();
         }
       } catch (error) {
@@ -268,13 +268,13 @@ const ProjectForm = ({ project }: { project?: Project }) => {
             "Content-Type": "application/json",
           },
         });
+        const data = await response.json();
         if (!response.ok) {
-          const data = await response.json();
           throw new Error(data.error || "Failed to add project");
         }
         toast.success("Project added successfully");
         // Redirect to dashboard on success
-        router.push("/admin/dashboard");
+        router.push(`/projects/${data?.id}`);
         router.refresh();
       } catch (error) {
         console.error("Error adding project:", error);
@@ -285,11 +285,59 @@ const ProjectForm = ({ project }: { project?: Project }) => {
     }
   };
 
+  const [isGenerating, setIsGenerating] = useState(false)
+
+  const handleAiGenerate = async () => {
+    if (!formData.title || !formData.githubUrl) {
+      toast.error("Please enter a project title and github url first!")
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      const response = await fetch("/api/generate-project-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formData.title,
+          technologies: formData.technologies,
+          githubUrl: formData.githubUrl,
+          demoUrl: formData.demoUrl,
+        })
+      })
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error)
+
+      // Auto-fill form fields
+      if (data.shortDescription) setFormData(prev => ({ ...prev, description: data.shortDescription }))
+      if (data.fullDescription) setFormData(prev => ({ ...prev, fullDescription: data.fullDescription }))
+      if (data.features && Array.isArray(data.features)) {
+        setFeatures(data.features.map((feature: FeatureItem) => ({
+          title: feature.title,
+          description: feature.description
+        })))
+      }
+
+      toast.success("Project details generated successfully with AI!")
+    } catch (error: any) {
+      toast.error(error.message || "AI generation failed")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <FieldGroup>
         <FieldSet>
-          <FieldLegend>{project ? "Edit Project" : "Add Project"}</FieldLegend>
+          <div className="flex justify-between items-center">
+            <FieldLegend>{project ? "Edit Project" : "Add Project"}</FieldLegend>
+            <Button variant="outline" type="button" onClick={handleAiGenerate} disabled={isGenerating}>
+              {isGenerating ? <Loader2 className="animate-spin" /> : <Sparkles />}
+
+              {isGenerating ? "Generating..." : "Generate with AI"}
+            </Button>
+          </div>
           <FieldGroup>
             <Field className="max-w-md">
               <FieldLabel htmlFor="title">Title</FieldLabel>
@@ -600,7 +648,7 @@ const ProjectForm = ({ project }: { project?: Project }) => {
                           onChange={(e) => updateFeature(i, "description", e.target.value)}
                           placeholder="What does this feature do?"
                           rows={2}
-                          className="resize-none text-sm ml-7"
+                          className="resize-none text-sm"
                         />
                       </div>
                     ))}
