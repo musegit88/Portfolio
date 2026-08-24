@@ -33,7 +33,7 @@ const SkillsContent = async ({ user }: { user?: Session["user"] }) => {
       <div className="absolute bottom-0 inset-x-0 h-32 -z-10 bg-linear-to-t from-background to-transparent pointer-events-none" />
 
       <h5 className="text-xl sm:text-2xl font-medium relative z-10">Skills</h5>
-      <p className="text-xs sm:text-sm text-muted-foreground relative z-10">
+      <p className="text-center text-xs sm:text-sm text-muted-foreground relative z-10">
         Experience in modern web development frameworks and tools.
       </p>
       <div className="container flex justify-center sm:justify-start flex-wrap w-full gap-4 mt-6 relative z-10">

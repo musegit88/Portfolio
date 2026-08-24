@@ -57,7 +57,7 @@ const ProjectsContent = async ({ user }: { user?: Session["user"] }) => {
         <div className="flex items-center justify-center">
           <h5 className="text-xl font-medium">Projects</h5>
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+        <p className="text-center text-xs sm:text-sm text-muted-foreground">
           Selected projects — click any card to view detailed interactive showcase
         </p>
       </div>
@@ -145,7 +145,7 @@ const ProjectsContent = async ({ user }: { user?: Session["user"] }) => {
 const ProjectsSkeleton = async () => {
   const projects = await prisma.project.count();
   return (
-    <section className="flex flex-col gap-y-4 mt-28">
+    <section className="container flex flex-col gap-y-4 mt-28">
       <div className="flex flex-col gap-2">
         <Skeleton className="w-40 h-6 bg-gray-500/40" />
         <Skeleton className="w-32 h-4 bg-gray-500/40" />
