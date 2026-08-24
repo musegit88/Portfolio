@@ -38,7 +38,7 @@ const HeroContent = async () => {
           />
         </div>
         <span className="font-semibold text-sm sm:text-base">
-          Hi, I'm {about?.name} 👋
+          Hi, I&apos;m {about?.name} 👋
         </span>
         <TextType
           text={[(about?.title || "")]}
