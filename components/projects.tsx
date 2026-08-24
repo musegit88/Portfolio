@@ -46,11 +46,16 @@ const ProjectsContent = async ({ user }: { user?: Session["user"] }) => {
   }));
 
   return (
-    <section id="projects" className="flex flex-col gap-y-4 mt-28">
-      <div>
-        <div className="flex items-center gap-4">
+    <section id="projects" className="relative py-16 sm:py-24 snap-start snap-always scroll-mt-20 pt-20 flex flex-col items-center justify-start overflow-hidden">
+      {/* Grid Texture Background */}
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#8080801a_1px,transparent_1px),linear-gradient(to_bottom,#8080801a_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* Top & bottom fade to blend with adjacent sections */}
+      <div className="absolute top-0 inset-x-0 h-32 -z-10 bg-linear-to-b from-background to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-32 -z-10 bg-linear-to-t from-background to-transparent pointer-events-none" />
+
+      <div className="mb-6 relative z-10">
+        <div className="flex items-center justify-center">
           <h5 className="text-xl font-medium">Projects</h5>
-          <CgWebsite size={20} />
         </div>
         <p className="text-xs sm:text-sm text-muted-foreground">
           Selected projects — click any card to view detailed interactive showcase
@@ -58,7 +63,7 @@ const ProjectsContent = async ({ user }: { user?: Session["user"] }) => {
       </div>
 
       {projectsToDisplay.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full relative z-10">
           {projectsToDisplay.map((project) => (
             <div key={project.id}>
               <Link

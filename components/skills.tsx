@@ -8,6 +8,8 @@ import { prisma } from "@/lib/prisma";
 import { Skeleton } from "./ui/skeleton";
 import { Button } from "./ui/button";
 
+import { AntigravityDots } from "./antigravity-dots";
+
 const Skills = async ({ user }: { user?: Session["user"] }) => {
   return (
     <Suspense fallback={<SkillsSkeleton />}>
@@ -23,12 +25,18 @@ const SkillsContent = async ({ user }: { user?: Session["user"] }) => {
     },
   });
   return (
-    <section className="mt-24">
-      <h5 className="text-xl font-medium">Skills</h5>
-      <p className="text-xs sm:text-sm">
+    <section id="skills" className="relative py-16 sm:py-24 snap-start snap-always scroll-mt-20 pt-20 flex flex-col items-center justify-start overflow-hidden">
+      {/* Interactive Dot Matrix Background */}
+      <AntigravityDots />
+      {/* Top & bottom fade to blend with adjacent sections */}
+      <div className="absolute top-0 inset-x-0 h-32 -z-10 bg-linear-to-b from-background to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-32 -z-10 bg-linear-to-t from-background to-transparent pointer-events-none" />
+
+      <h5 className="text-xl sm:text-2xl font-medium relative z-10">Skills</h5>
+      <p className="text-xs sm:text-sm text-muted-foreground relative z-10">
         Experience in modern web development frameworks and tools.
       </p>
-      <div className="flex flex-wrap w-full gap-4 mt-6">
+      <div className="container flex flex-wrap justify-start w-full gap-4 mt-6 relative z-10">
         {skills.length > 0 ? (
           skills.map((skill) => <SkillCard key={skill.id} skill={skill} />)
         ) : (
@@ -66,16 +74,15 @@ const SkillCard = ({ skill }: SkillCardProps) => {
 
   return (
     <div
-      className="group flex flex-col items-center gap-2 min-w-[80px] border p-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg hover:border-primary/50"
+      className="group flex flex-col items-center gap-2 min-w-20 border bg-background p-4 sm:p-8 rounded-md transition-all duration-300 shadow-md hover:shadow-lg hover:border-primary/50"
       title={skill.name}
     >
       {Icon && (
         <Icon
-          size={32}
-          className="transition-transform duration-300 group-hover:scale-110"
+          className="w-12 h-12 sm:w-24 sm:h-24 transition-transform duration-300 group-hover:scale-110"
         />
       )}
-      <span className="text-xs">{skill.name}</span>
+      <span className="text-xs sm:text-sm">{skill.name}</span>
     </div>
   );
 };
@@ -90,7 +97,7 @@ const SkillsSkeleton = async () => {
       </div>
       <div className="flex flex-wrap w-full gap-4 mt-6">
         {Array.from({ length: skills }).map((_, index) => (
-          <Skeleton key={index} className="w-20 h-20 bg-gray-500/40" />
+          <Skeleton key={index} className="w-12 h-12 sm:w-24 sm:h-24 bg-gray-500/40" />
         ))}
       </div>
     </section>

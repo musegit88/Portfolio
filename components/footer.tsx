@@ -9,7 +9,7 @@ const Footer = () => {
     });
   };
   return (
-    <section className="flex flex-col gap-2 md:flex-row items-center justify-between my-8">
+    <section className="container flex flex-col gap-2 md:flex-row items-center justify-between my-8">
       <span className="text-xs whitespace-nowrap">
         Copyright © {year} M4 Dev
       </span>
