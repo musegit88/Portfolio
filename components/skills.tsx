@@ -36,7 +36,7 @@ const SkillsContent = async ({ user }: { user?: Session["user"] }) => {
       <p className="text-xs sm:text-sm text-muted-foreground relative z-10">
         Experience in modern web development frameworks and tools.
       </p>
-      <div className="container flex flex-wrap justify-start w-full gap-4 mt-6 relative z-10">
+      <div className="container flex justify-center sm:justify-start flex-wrap w-full gap-4 mt-6 relative z-10">
         {skills.length > 0 ? (
           skills.map((skill) => <SkillCard key={skill.id} skill={skill} />)
         ) : (
